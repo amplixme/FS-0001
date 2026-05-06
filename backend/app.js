@@ -1,16 +1,16 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
+const express = require('express');
+const cors = require('cors');
+require('dotenv').config();
 
-const errorHandler = require("./src/middlewares/error.middleware");
+const errorHandler = require('./middlewares/error.middleware');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.json({ message: "Server running correctly" });
+app.get('/', (req, res) => {
+  res.json({ message: 'Server running correctly' });
 });
 
 app.listen(PORT, () => {
