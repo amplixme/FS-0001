@@ -1,3 +1,5 @@
+import { buttonVariants } from "@/components/ui/button"
+
 function Header() {
   return (
     <header className="border-b bg-white">
@@ -14,11 +16,17 @@ function Header() {
         </nav>
 
         <div className="flex items-center gap-4">
-          <button>Login</button>
-
-          <button className="rounded-lg bg-blue-600 px-4 py-2 text-white">
+          <a
+            href="/login"
+            className={buttonVariants({ variant: "outline" })}
+          >
+            Login
+          </a>
+          <a
+            href="/register"
+            className={buttonVariants({ variant: "default" })}>
             Register
-          </button>
+          </a>
         </div>
 
       </div>
