@@ -14,9 +14,9 @@ function Header() {
         </h1>
 
         <nav className="hidden sm:flex items-center gap-6">
-          <Link to="/latest">Latest</Link>
-          <Link to="/popular">Popular</Link>
-          <Link to="/newsletter">Newsletter</Link>
+          <Link to="/latest" onClick={() => setIsMenuOpen(false)}>Latest</Link>
+          <Link to="/popular" onClick={() => setIsMenuOpen(false)}>Popular</Link>
+          <Link to="/newsletter" onClick={() => setIsMenuOpen(false)}>Newsletter</Link>
         </nav>
 
         <div className="hidden sm:flex items-center gap-4">
@@ -39,34 +39,33 @@ function Header() {
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-
-        {
-          isMenuOpen && (
-            <div className="border-t bg-white px-6 py-4 sm:hidden">
-              <nav className="flex flex-col gap-4">
-                <a href="/latest">Latest</a>
-                <a href="/popular">Popular</a>
-                <a href="/newsletter">Newsletter</a>
-
-                <hr />
-
-                <Link
-                  to="/login"
-                  className={buttonVariants({ variant: "outline" })}
-                >
-                  Login
-                </Link>
-                <Link
-                  to="/register"
-                  className={buttonVariants({ variant: "default" })}>
-                  Register
-                </Link>
-              </nav>
-            </div>
-          )
-        }
-
       </div>
+
+      {
+        isMenuOpen && (
+          <div className="border-t bg-white px-6 py-4 sm:hidden">
+            <nav className="flex flex-col gap-4">
+              <Link to="/latest" onClick={() => setIsMenuOpen(false)}>Latest</Link>
+              <Link to="/popular" onClick={() => setIsMenuOpen(false)}>Popular</Link>
+              <Link to="/newsletter" onClick={() => setIsMenuOpen(false)}>Newsletter</Link>
+
+              <hr />
+
+              <Link
+                to="/login"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className={buttonVariants({ variant: "default" })}>
+                Register
+              </Link>
+            </nav>
+          </div>
+        )
+      }
     </header>
   )
 }
