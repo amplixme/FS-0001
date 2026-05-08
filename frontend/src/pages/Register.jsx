@@ -186,7 +186,7 @@ function Register() {
 
                 <label
                   htmlFor="terms"
-                  className="text-sm leading-relaxed cursor-pointer"
+                  className="text-sm leading-relaxed"
                 >
                   Acepto los{' '}
                   <Link
