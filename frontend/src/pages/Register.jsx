@@ -7,12 +7,7 @@ import api from '@/services/api';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import {
   Field,
@@ -57,7 +52,6 @@ function Register() {
           successMessage: 'Usuario registrado exitosamente',
         },
       });
-
     } catch (error) {
       const message =
         error.response?.data?.error?.message ||
@@ -71,17 +65,11 @@ function Register() {
     <div className="mx-auto mt-10 max-w-md px-4">
       <Card>
         <CardHeader>
-          <CardTitle>
-            Crear cuenta
-          </CardTitle>
+          <CardTitle>Crear cuenta</CardTitle>
         </CardHeader>
 
         <CardContent>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="space-y-4"
-          >
-
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <Field>
               <FieldLabel>Nombre completo</FieldLabel>
               <FieldContent>
@@ -97,11 +85,7 @@ function Register() {
                 />
               </FieldContent>
 
-              {errors.name && (
-                <FieldError>
-                  {errors.name.message}
-                </FieldError>
-              )}
+              {errors.name && <FieldError>{errors.name.message}</FieldError>}
             </Field>
 
             <Field>
@@ -120,11 +104,7 @@ function Register() {
                 />
               </FieldContent>
 
-              {errors.email && (
-                <FieldError>
-                  {errors.email.message}
-                </FieldError>
-              )}
+              {errors.email && <FieldError>{errors.email.message}</FieldError>}
             </Field>
 
             <Field>
@@ -136,17 +116,15 @@ function Register() {
                   {...register('password', {
                     required: 'La contraseña es obligatoria',
                     minLength: {
-                      value: 8,
-                      message: 'Debe tener al menos 8 caracteres',
+                      value: 6,
+                      message: 'Debe tener al menos 6 caracteres',
                     },
                   })}
                 />
               </FieldContent>
 
               {errors.password && (
-                <FieldError>
-                  {errors.password.message}
-                </FieldError>
+                <FieldError>{errors.password.message}</FieldError>
               )}
             </Field>
 
@@ -159,21 +137,18 @@ function Register() {
                   {...register('confirmPassword', {
                     required: 'Confirmá tu contraseña',
                     validate: (value) =>
-                      value === password ||
-                      'Las contraseñas no coinciden',
+                      value === password || 'Las contraseñas no coinciden',
                   })}
                 />
               </FieldContent>
 
               {errors.confirmPassword && (
-                <FieldError>
-                  {errors.confirmPassword.message}
-                </FieldError>
+                <FieldError>{errors.confirmPassword.message}</FieldError>
               )}
             </Field>
 
             <Field>
-              <div className="flex items-start gap-3">
+              <div className="flex gap-3 items-center justify-center">
                 <Checkbox
                   id="terms"
                   checked={getValues('termsAccepted')}
@@ -184,22 +159,13 @@ function Register() {
                   }}
                 />
 
-                <label
-                  htmlFor="terms"
-                  className="text-sm leading-relaxed"
-                >
+                <label htmlFor="terms" className="text-sm leading-relaxed">
                   Acepto los{' '}
-                  <Link
-                    to="/terms"
-                    className="text-primary hover:underline"
-                  >
+                  <Link to="/terms" className="text-primary hover:underline">
                     Términos y Condiciones
                   </Link>{' '}
                   y la{' '}
-                  <Link
-                    to="/privacy"
-                    className="text-primary hover:underline"
-                  >
+                  <Link to="/privacy" className="text-primary hover:underline">
                     Política de Privacidad
                   </Link>{' '}
                   de TuProyecto.
@@ -214,27 +180,20 @@ function Register() {
               />
 
               {errors.termsAccepted && (
-                <FieldError>
-                  {errors.termsAccepted.message}
-                </FieldError>
+                <FieldError>{errors.termsAccepted.message}</FieldError>
               )}
             </Field>
 
             <Button
               type="submit"
-              className="w-full"
+              className="w-full border-black"
               disabled={isSubmitting || !getValues('termsAccepted')}
             >
-              {isSubmitting
-                ? 'Creando cuenta...'
-                : 'Crear cuenta'}
+              {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
             </Button>
             {serverError && (
-              <p className="text-sm text-red-500 text-center">
-                {serverError}
-              </p>
+              <p className="text-sm text-red-500 text-center">{serverError}</p>
             )}
-
           </form>
         </CardContent>
       </Card>
