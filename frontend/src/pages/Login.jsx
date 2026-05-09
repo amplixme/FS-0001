@@ -11,6 +11,7 @@ import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 function Login() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const { login } = useAuth();
 
   const {
     register,
@@ -27,7 +28,7 @@ function Login() {
         password: data.password,
       });
 
-      localStorage.setItem('token', response.data.data.token);
+      login(response.data.data.token, response.data.data.user);
 
       navigate('/');
     } catch (error) {
