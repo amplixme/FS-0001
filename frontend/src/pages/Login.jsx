@@ -10,6 +10,8 @@ import { Input } from '@/components/ui/input';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
+import { useAuth } from '@/context/AuthContext';
+
 import {
   Field,
   FieldLabel,
@@ -20,6 +22,7 @@ import {
 function Login() {
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const { login } = useAuth();
 
   const {
     register,
@@ -40,7 +43,7 @@ function Login() {
         password: data.password,
       });
 
-      localStorage.setItem('token', response.data.data.token);
+      login(response.data.data.token, response.data.data.user);
 
       navigate('/');
     } catch (error) {
