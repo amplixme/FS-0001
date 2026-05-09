@@ -2,13 +2,15 @@ import { Link } from 'react-router-dom'
 import { buttonVariants } from "@/components/ui/button"
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
+import { useAuth } from '@/context/AuthContext'
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { user, isAuthenticated, logout } = useAuth()
   return (
     <header className="border-b bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        
+
         <h1 className="text-xl font-bold">
           TuProyecto
         </h1>
@@ -20,17 +22,30 @@ function Header() {
         </nav>
 
         <div className="hidden sm:flex items-center gap-4">
-          <Link
-            to="/login"
-            className={buttonVariants({ variant: "outline" })}
-          >
-            Login
-          </Link>
-          <Link
-            to="/register"
-            className={buttonVariants({ variant: "default" })}>
-            Register
-          </Link>
+          {isAuthenticated ? (
+            <>
+              <span className="text-sm font-medium">{user.name}</span>
+              <button
+                onClick={logout}
+                className={buttonVariants({ variant: "outline" })}
+              >
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className={buttonVariants({ variant: "outline" })}
+              >
+                Login
+              </Link>
+              <Link
+                to="/register"
+                className={buttonVariants({ variant: "default" })}>
+                Register
+              </Link>
+            </>)}
         </div>
 
         <button
@@ -51,17 +66,31 @@ function Header() {
 
               <hr />
 
-              <Link
-                to="/login"
-                className={buttonVariants({ variant: "outline" })}
-              >
-                Login
-              </Link>
-              <Link
-                to="/register"
-                className={buttonVariants({ variant: "default" })}>
-                Register
-              </Link>
+              {isAuthenticated ? (
+                <>
+                  <span className="text-sm font-medium">{user.name}</span>
+                  <button
+                    onClick={logout}
+                    className={buttonVariants({ variant: "outline" })}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/login"
+                    className={buttonVariants({ variant: "outline" })}
+                  >
+                    Login
+                  </Link>
+                  <Link
+                    to="/register"
+                    className={buttonVariants({ variant: "default" })}>
+                    Register
+                  </Link>
+                </>
+              )}
             </nav>
           </div>
         )
