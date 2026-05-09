@@ -1,23 +1,13 @@
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 import api from '@/services/api';
 
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-import {
-  Field,
-  FieldLabel,
-  FieldContent,
-  FieldError,
-} from '@/components/ui/field';
-
+import { Card } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Link } from 'react-router-dom';
+import { User, Mail, Lock } from 'lucide-react';
+import { Field, FieldLabel, FieldError } from '@/components/ui/field';
 
 function Register() {
   const navigate = useNavigate();
@@ -62,19 +52,41 @@ function Register() {
   };
 
   return (
-    <div className="mx-auto mt-10 max-w-md px-4">
-      <Card>
-        <CardHeader>
-          <CardTitle>Crear cuenta</CardTitle>
-        </CardHeader>
+    <div
+      style={{ backgroundColor: '#f0f2f5' }}
+      className="min-h-screen flex flex-col items-center justify-center px-4 py-12"
+    >
+      <Card className="w-full max-w-md rounded-2xl shadow-lg overflow-hidden">
+        <div
+          className="h-1.5 w-full"
+          style={{ background: 'linear-gradient(to right, #2563eb, #38bdf8)' }}
+        />
 
-        <CardContent>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <div className="px-10 py-10">
+          <div className="mb-8">
+            <span
+              style={{ color: '#2563eb' }}
+              className="text-xl font-bold tracking-tight"
+            >
+              TuProyecto
+            </span>
+          </div>
+
+          <h1 className="text-3xl font-bold text-gray-900 mb-1">
+            Crear cuenta
+          </h1>
+          <p className="text-gray-500 text-sm mb-8">
+            Completá tus datos para registrarte
+          </p>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <Field>
               <FieldLabel>Nombre completo</FieldLabel>
-              <FieldContent>
-                <Input
+              <div className="flex items-center gap-3 rounded-xl px-4 py-3 bg-gray-100">
+                <User size={15} className="text-gray-400 shrink-0" />
+                <input
                   placeholder="Ej. Juan Pérez"
+                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
                   {...register('name', {
                     required: 'El nombre es obligatorio',
                     minLength: {
@@ -83,36 +95,35 @@ function Register() {
                     },
                   })}
                 />
-              </FieldContent>
-
+              </div>
               {errors.name && <FieldError>{errors.name.message}</FieldError>}
             </Field>
 
             <Field>
-              <FieldLabel>Email</FieldLabel>
-              <FieldContent>
-                <Input
+              <FieldLabel>Correo electrónico</FieldLabel>
+              <div className="flex items-center gap-3 rounded-xl px-4 py-3 bg-gray-100">
+                <Mail size={15} className="text-gray-400 shrink-0" />
+                <input
                   type="email"
-                  placeholder="nombre@ejemplo.com"
+                  placeholder="ejemplo@correo.com"
+                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
                   {...register('email', {
                     required: 'El email es obligatorio',
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: 'Email inválido',
-                    },
+                    pattern: { value: /^\S+@\S+$/i, message: 'Email inválido' },
                   })}
                 />
-              </FieldContent>
-
+              </div>
               {errors.email && <FieldError>{errors.email.message}</FieldError>}
             </Field>
 
             <Field>
               <FieldLabel>Contraseña</FieldLabel>
-              <FieldContent>
-                <Input
+              <div className="flex items-center gap-3 rounded-xl px-4 py-3 bg-gray-100">
+                <Lock size={15} className="text-gray-400 shrink-0" />
+                <input
                   type="password"
                   placeholder="••••••••"
+                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
                   {...register('password', {
                     required: 'La contraseña es obligatoria',
                     minLength: {
@@ -121,8 +132,7 @@ function Register() {
                     },
                   })}
                 />
-              </FieldContent>
-
+              </div>
               {errors.password && (
                 <FieldError>{errors.password.message}</FieldError>
               )}
@@ -130,25 +140,26 @@ function Register() {
 
             <Field>
               <FieldLabel>Confirmar contraseña</FieldLabel>
-              <FieldContent>
-                <Input
+              <div className="flex items-center gap-3 rounded-xl px-4 py-3 bg-gray-100">
+                <Lock size={15} className="text-gray-400 shrink-0" />
+                <input
                   type="password"
                   placeholder="••••••••"
+                  className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
                   {...register('confirmPassword', {
                     required: 'Confirmá tu contraseña',
                     validate: (value) =>
                       value === password || 'Las contraseñas no coinciden',
                   })}
                 />
-              </FieldContent>
-
+              </div>
               {errors.confirmPassword && (
                 <FieldError>{errors.confirmPassword.message}</FieldError>
               )}
             </Field>
 
             <Field>
-              <div className="flex gap-3 items-center justify-center">
+              <div className="flex gap-3 items-center">
                 <Checkbox
                   id="terms"
                   checked={getValues('termsAccepted')}
@@ -158,14 +169,22 @@ function Register() {
                     });
                   }}
                 />
-
-                <label htmlFor="terms" className="text-sm leading-relaxed">
+                <label
+                  htmlFor="terms"
+                  className="text-sm leading-relaxed text-gray-600"
+                >
                   Acepto los{' '}
-                  <Link to="/terms" className="text-primary hover:underline">
+                  <Link
+                    to="/terms"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
                     Términos y Condiciones
                   </Link>{' '}
                   y la{' '}
-                  <Link to="/privacy" className="text-primary hover:underline">
+                  <Link
+                    to="/privacy"
+                    className="text-blue-600 hover:underline font-medium"
+                  >
                     Política de Privacidad
                   </Link>{' '}
                   de TuProyecto.
@@ -184,19 +203,42 @@ function Register() {
               )}
             </Field>
 
-            <Button
-              type="submit"
-              className="w-full border-black"
-              disabled={isSubmitting || !getValues('termsAccepted')}
-            >
-              {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
-            </Button>
             {serverError && (
               <p className="text-sm text-red-500 text-center">{serverError}</p>
             )}
+
+            <button
+              type="submit"
+              disabled={isSubmitting || !getValues('termsAccepted')}
+              className="w-full py-3.5 rounded-full text-white font-semibold text-sm transition-opacity hover:opacity-90 active:opacity-80 cursor-pointer disabled:opacity-60"
+              style={{ backgroundColor: '#2563eb' }}
+            >
+              {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
+            </button>
           </form>
-        </CardContent>
+
+          <p className="text-center text-sm text-gray-500 mt-7">
+            ¿Ya tienes cuenta?{' '}
+            <Link
+              to="/login"
+              style={{ color: '#2563eb' }}
+              className="font-semibold hover:underline"
+            >
+              Iniciá sesión
+            </Link>
+          </p>
+        </div>
       </Card>
+
+      <footer className="mt-6 flex items-center gap-4 text-xs text-gray-400">
+        <span>© 2024 TUPROYECTO</span>
+        <a href="#" className="hover:text-gray-600 transition-colors">
+          Privacidad
+        </a>
+        <a href="#" className="hover:text-gray-600 transition-colors">
+          Términos
+        </a>
+      </footer>
     </div>
   );
 }
