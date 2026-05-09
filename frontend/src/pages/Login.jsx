@@ -40,7 +40,7 @@ function Login() {
         password: data.password,
       });
 
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', response.data.data.token);
 
       navigate('/');
     } catch (error) {
