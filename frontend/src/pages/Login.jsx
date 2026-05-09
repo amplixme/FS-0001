@@ -88,8 +88,8 @@ function Login() {
                   {...register('password', {
                     required: 'La contraseña es obligatoria',
                     minLength: {
-                      value: 8,
-                      message: 'Debe tener al menos 8 caracteres',
+                      value: 6,
+                      message: 'Debe tener al menos 6 caracteres',
                     },
                   })}
                 />
