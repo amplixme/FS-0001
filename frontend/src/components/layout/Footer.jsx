@@ -5,7 +5,7 @@ function Footer() {
         © {new Date().getFullYear()} TuProyecto. All rights reserved.
       </div>
     </footer>
-  )
+  );
 }
 
-export default Footer
+export default Footer;
