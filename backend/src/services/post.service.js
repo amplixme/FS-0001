@@ -12,4 +12,42 @@ const createPost = async ({ title, content, authorId }) => {
     return post;
 };
 
-module.exports = { createPost };
+const getAllPosts = async () => {
+  const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
+    include: {
+      author: {
+        select: {
+          name: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return posts;
+};
+
+const getPostById = async (id) => {
+  const post = await prisma.post.findFirst({
+    where: {
+      id,
+      published: true,
+    },
+    include: {
+      author: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  return post;
+};
+
+module.exports = { createPost, getAllPosts, getPostById };
