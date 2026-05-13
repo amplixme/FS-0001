@@ -6,6 +6,7 @@ const router = Router();
 // router.use('/posts', postRoutes);
 
 const authRoutes = require('./auth.routes');
+const postRoutes = require('./post.routes');
 
 // Health check
 router.get('/health', (req, res) => {
@@ -14,5 +15,6 @@ router.get('/health', (req, res) => {
 
 //Mounted routes
 router.use('/auth', authRoutes);
+router.use('/posts', postRoutes);
 
 module.exports = router;
