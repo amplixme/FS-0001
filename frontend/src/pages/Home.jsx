@@ -40,7 +40,7 @@ function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
+    <div className="min-h-screen bg-slate-50 p-4 md:p-6 lg:p-8">
       {posts.length === 0 ? (
         <div className="flex items-center justify-center min-h-screen">
           <p className="text-gray-500">No hay post todavía</p>
