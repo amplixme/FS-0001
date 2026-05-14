@@ -42,7 +42,7 @@ function ConfirmModal({
 
           <AlertDialogAction
             onClick={onConfirm}
-            className="bg-destructive text-white hover:bg-destructive/90"
+            variant="destructive"
           >
             {confirmText}
           </AlertDialogAction>
