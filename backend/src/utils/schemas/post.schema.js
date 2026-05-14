@@ -5,4 +5,16 @@ const createPostSchema = z.object({
     content: z.string().min(1, 'El contenido es requerido'),
 });
 
-module.exports = { createPostSchema };
+const updatePostSchema = z.object({
+    title: z.string().min(1, 'El título no puede estar vacío').optional(),
+    content: z.string().min(1, 'El contenido no puede estar vacío').optional(),
+    published: z.boolean().optional()
+})
+.refine((data) =>
+    data.title !== undefined ||
+    data.content !== undefined ||
+    data.published !== undefined, 
+    { message: 'Debes enviar al menos un campo para actualizar',}
+);
+
+module.exports = { createPostSchema, updatePostSchema };
