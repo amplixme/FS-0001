@@ -39,11 +39,11 @@ function Home() {
     );
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
+    <div className="min-h-screen bg-slate-50 p-4 md:p-6 lg:p-8">
       {posts.length === 0 ? (
         <EmptyState message="No hay publicaciones todavía" />
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-6">
           {posts.map((post) => (
             <PostCard
               key={post.id}
