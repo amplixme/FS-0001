@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
-import { getById } from '@/services/post.service';
+import { toast } from 'sonner';
+import ConfirmModal from '@/components/common/ConfirmModal';
+import { getById, delete as deletePost } from '@/services/post.service';
 import { Pencil, Trash2 } from 'lucide-react';
 
 function PostDetail() {
@@ -32,6 +34,16 @@ function PostDetail() {
     if (!post) return <p className="text-center mt-10">Post no encontrado</p>;
 
     const isAuthor = user?.id === post.authorId;
+
+    const handleDelete = async () => {
+        try {
+            await deletePost(id);
+            toast.success('Artículo eliminado correctamente');
+            navigate('/');
+        } catch (error) {
+            toast.error(error.message);
+        }
+    };
 
     return (
         <div className="mx-auto max-w-3xl px-6 py-10">
@@ -71,10 +83,16 @@ function PostDetail() {
                         <Pencil size={16} />
                         Editar
                     </button>
-                    <button className="flex items-center gap-2 px-5 py-2 rounded-full border border-red-600 text-red-600 hover:bg-red-50 transition-all text-sm font-semibold">
-                        <Trash2 size={16} />
-                        Eliminar
-                    </button>
+                    <ConfirmModal
+                        description="¿Estás seguro de que deseas eliminar este artículo? Esta acción no se puede deshacer."
+                        onConfirm={handleDelete}
+                        trigger={
+                            <button className="flex items-center gap-2 px-5 py-2 rounded-full border border-red-600 text-red-600 hover:bg-red-50 transition-all text-sm font-semibold">
+                            <Trash2 size={16} />
+                            Eliminar
+                            </button>
+                        }
+                    />
                 </div>
             )}
         </div>
