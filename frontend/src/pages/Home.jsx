@@ -1,50 +1,47 @@
 import { useState, useEffect } from 'react';
 import PostCard from '@/components/posts/PostCard';
+import Spinner from '@/components/common/Spinner';
+import ErrorMessage from '@/components/common/ErrorMessage';
+import EmptyState from '@/components/common/EmptyState';
 import { getAll } from '@/services/post.service';
 
 function Home() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [retryCount, setRetryCount] = useState(0);
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const loadPosts = async () => {
       try {
+        setLoading(true);
+        setError('');
         const response = await getAll();
-        console.log(response);
         setPosts(response.data);
-      } catch (err) {
+      } catch (_err) {
         setError('Error al cargar los posts');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPosts();
-  }, []);
+    loadPosts();
+  }, [retryCount]);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-gray-500">Cargando...</p>
-      </div>
-    );
-  }
+  if (loading) return <Spinner />;
 
-  if (error) {
+  if (error)
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-500">{error}</p>
-      </div>
+      <ErrorMessage
+        message={error}
+        onRetry={() => setRetryCount((c) => c + 1)}
+      />
     );
-  }
 
   return (
     <div className="min-h-screen bg-slate-50 p-4 md:p-6 lg:p-8">
       {posts.length === 0 ? (
-        <div className="flex items-center justify-center min-h-screen">
-          <p className="text-gray-500">No hay post todavía</p>
-        </div>
+        <EmptyState message="No hay publicaciones todavía" />
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto px-6">
           {posts.map((post) => (
