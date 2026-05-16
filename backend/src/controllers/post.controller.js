@@ -1,16 +1,22 @@
-const { createPost, getAllPosts, getPostById, updatePost, deletePost } = require('../services/post.service');
+const {
+  createPost,
+  getAllPosts,
+  getPostById,
+  updatePost,
+  deletePost,
+} = require('../services/post.service');
 const { success } = require('../utils/response');
 
 const create = async (req, res, next) => {
-    try {
-        const { title, content } = req.body;
-        const authorId = req.user.id;
+  try {
+    const { title, content, published } = req.body;
+    const authorId = req.user.id;
 
-        const post = await createPost({ title, content, authorId });
-        return success(res, post, 201);
-    } catch (error) {
-        next(error);
-    }
+    const post = await createPost({ title, content, published, authorId });
+    return success(res, post, 201);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const getAll = async (req, res, next) => {
@@ -42,30 +48,30 @@ const getById = async (req, res, next) => {
 };
 
 const update = async (req, res, next) => {
-    try {
-        const post = await updatePost({
-            id: req.params.id,
-            data: req.body,
-            user: req.user,
-        });
+  try {
+    const post = await updatePost({
+      id: req.params.id,
+      data: req.body,
+      user: req.user,
+    });
 
-        return success(res, post);
-    } catch (error) {
-        next(error);
-    }
+    return success(res, post);
+  } catch (error) {
+    next(error);
+  }
 };
 
 const remove = async (req, res, next) => {
-    try {
-        await deletePost({
-            id: req.params.id,
-            user: req.user,
-        });
+  try {
+    await deletePost({
+      id: req.params.id,
+      user: req.user,
+    });
 
-        return success(res, { message: 'Post eliminado correctamente' });
-    } catch (error) {
-        next(error);
-    }
+    return success(res, { message: 'Post eliminado correctamente' });
+  } catch (error) {
+    next(error);
+  }
 };
 
 module.exports = { create, getAll, getById, update, remove };

@@ -2,16 +2,15 @@ const { PrismaClient } = require('@prisma/client');
 const AppError = require('../utils/AppErrors');
 const prisma = new PrismaClient();
 
+const createPost = async ({ title, content, published = false, authorId }) => {
+  const post = await prisma.post.create({
+    data: { title, content, published, authorId },
+    include: {
+      author: { select: { name: true } },
+    },
+  });
 
-const createPost = async ({ title, content, authorId }) => {
-    const post = await prisma.post.create({
-        data: { title, content, authorId },
-        include: {
-            author: { select: { name: true } },
-        },
-    });
-
-    return post;
+  return post;
 };
 
 const getAllPosts = async () => {
@@ -65,7 +64,6 @@ const getPostForOwnershipCheck = async (id) => {
 };
 
 const checkPostOwnershipOrAdmin = (post, user) => {
-
   const isAuthor = post.authorId === user.id;
   const isAdmin = user.role === 'ADMIN';
 
@@ -74,7 +72,7 @@ const checkPostOwnershipOrAdmin = (post, user) => {
   }
 };
 
-const updatePost = async ({ id, data, user}) => {
+const updatePost = async ({ id, data, user }) => {
   const post = await getPostForOwnershipCheck(id);
 
   checkPostOwnershipOrAdmin(post, user);
@@ -104,4 +102,11 @@ const deletePost = async ({ id, user }) => {
   });
 };
 
-module.exports = { createPost, getAllPosts, getPostById, checkPostOwnershipOrAdmin, updatePost, deletePost };
+module.exports = {
+  createPost,
+  getAllPosts,
+  getPostById,
+  checkPostOwnershipOrAdmin,
+  updatePost,
+  deletePost,
+};
