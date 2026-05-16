@@ -11,7 +11,6 @@ function Home() {
     const fetchPosts = async () => {
       try {
         const response = await getAll();
-        console.log(response);
         setPosts(response.data);
       } catch (err) {
         setError('Error al cargar los posts');
