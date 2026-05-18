@@ -11,6 +11,7 @@ const updatePostSchema = z
     title: z.string().min(1, 'El título no puede estar vacío').optional(),
     content: z.string().min(1, 'El contenido no puede estar vacío').optional(),
     published: z.boolean().optional(),
+    coverImage: z.string().url().optional(),
   })
   .refine(
     (data) =>

@@ -9,10 +9,16 @@ const { success } = require('../utils/response');
 
 const create = async (req, res, next) => {
   try {
-    const { title, content, published } = req.body;
+    const { title, content, published, coverImage } = req.body;
     const authorId = req.user.id;
 
-    const post = await createPost({ title, content, published, authorId });
+    const post = await createPost({
+      title,
+      content,
+      published,
+      authorId,
+      coverImage,
+    });
     return success(res, post, 201);
   } catch (error) {
     next(error);
