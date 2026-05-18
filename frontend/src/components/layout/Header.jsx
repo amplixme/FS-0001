@@ -10,7 +10,13 @@ function Header() {
   return (
     <header className="border-b bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-        <h1 className="text-xl font-bold">TuProyecto</h1>
+        <Link
+          to="/"
+          className="text-xl font-bold"
+          onClick={() => setIsMenuOpen(false)}
+        >
+          TuProyecto
+        </Link>
 
         <nav className="hidden sm:flex items-center gap-6">
           <Link to="/latest" onClick={() => setIsMenuOpen(false)}>
@@ -34,6 +40,12 @@ function Header() {
               >
                 Logout
               </button>
+              <Link
+                to="/posts/create"
+                className={buttonVariants({ variant: 'default' })}
+              >
+                Nuevo post
+              </Link>
             </>
           ) : (
             <>
