@@ -10,7 +10,7 @@ const postRoutes = require('./post.routes');
 
 // Health check
 router.get('/health', (req, res) => {
-    res.status(200).json({ status: 'ok' });
+  res.status(200).json({ status: 'ok' });
 });
 
 //Mounted routes
