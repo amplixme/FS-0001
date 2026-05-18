@@ -20,30 +20,19 @@ function ConfirmModal({
 }) {
   return (
     <AlertDialog>
-      <AlertDialogTrigger asChild>
-        {trigger}
-      </AlertDialogTrigger>
+      <AlertDialogTrigger asChild>{trigger}</AlertDialogTrigger>
 
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            {title}
-          </AlertDialogTitle>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
 
-          <AlertDialogDescription>
-            {description}
-          </AlertDialogDescription>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>
-            {cancelText}
-          </AlertDialogCancel>
+          <AlertDialogCancel>{cancelText}</AlertDialogCancel>
 
-          <AlertDialogAction
-            onClick={onConfirm}
-            variant="destructive"
-          >
+          <AlertDialogAction onClick={onConfirm} variant="destructive">
             {confirmText}
           </AlertDialogAction>
         </AlertDialogFooter>

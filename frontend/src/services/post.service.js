@@ -9,12 +9,12 @@ const handleApiError = (error) => {
 };
 
 const getAll = async () => {
-    try {
-        const response = await api.get('/posts');
-        return response.data;
-    } catch (error) {
-        handleApiError(error);
-    }
+  try {
+    const response = await api.get('/posts');
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
 };
 
 const getById = async (id) => {
@@ -53,10 +53,4 @@ const remove = async (id) => {
   }
 };
 
-export {
-  getAll,
-  getById,
-  create,
-  update,
-  remove as delete,
-};
+export { getAll, getById, create, update, remove as delete };
