@@ -2,9 +2,15 @@ const { PrismaClient } = require('@prisma/client');
 const AppError = require('../utils/AppErrors');
 const prisma = new PrismaClient();
 
-const createPost = async ({ title, content, published = false, authorId }) => {
+const createPost = async ({
+  title,
+  content,
+  published = false,
+  authorId,
+  coverImage,
+}) => {
   const post = await prisma.post.create({
-    data: { title, content, published, authorId },
+    data: { title, content, published, authorId, coverImage },
     include: {
       author: { select: { name: true } },
     },
