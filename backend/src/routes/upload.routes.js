@@ -1,15 +1,15 @@
-import { Router } from 'express';
-import authMiddleware from '../middlewares/auth.middleware';
-import { single } from '../middlewares/upload.middleware';
-import { upload } from '../controllers/upload.controller';
+const { Router } = require('express');
+const authMiddleware = require('../middlewares/auth.middleware');
+const uploadMiddleware = require('../middlewares/upload.middleware');
+const { upload } = require('../controllers/upload.controller');
 
 const router = Router();
 
 router.post(
   '/',
   authMiddleware,
-  single('image'),
+  uploadMiddleware.single('image'),
   upload,
 );
 
-export default router;
+module.exports = router;
