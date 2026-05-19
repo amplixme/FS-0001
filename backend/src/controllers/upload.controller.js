@@ -1,4 +1,4 @@
-import { uploadImage } from '../services/upload.service';
+const { uploadImage } = require('../services/upload.service');
 
 const upload = async (req, res, next) => {
   try {
@@ -20,6 +20,6 @@ const upload = async (req, res, next) => {
   }
 };
 
-export default {
+module.exports = {
   upload,
 };
