@@ -1,6 +1,6 @@
-import multer, { memoryStorage } from 'multer';
+const multer = require('multer');
 
-const storage = memoryStorage();
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = [
@@ -27,4 +27,4 @@ const upload = multer({
   fileFilter,
 });
 
-export default upload;
+module.exports = upload;
