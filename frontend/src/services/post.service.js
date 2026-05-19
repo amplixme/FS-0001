@@ -8,9 +8,9 @@ const handleApiError = (error) => {
   throw new Error(message);
 };
 
-const getAll = async () => {
+const getAll = async (params = {}) => {
   try {
-    const response = await api.get('/posts');
+    const response = await api.get('/posts', { params });
     return response.data;
   } catch (error) {
     handleApiError(error);
