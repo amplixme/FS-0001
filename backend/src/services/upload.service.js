@@ -1,9 +1,9 @@
-import { createReadStream } from 'streamifier';
-import { uploader } from '../config/cloudinary';
+const streamifier = require('streamifier');
+const cloudinary = require('../config/cloudinary');
 
 const uploadImage = async (fileBuffer) => {
   return new Promise((resolve, reject) => {
-    const stream = uploader.upload_stream(
+    const stream = cloudinary.uploader.upload_stream(
       {
         folder: 'fs0001',
       },
@@ -16,10 +16,10 @@ const uploadImage = async (fileBuffer) => {
       },
     );
 
-    createReadStream(fileBuffer).pipe(stream);
+    streamifier.createReadStream(fileBuffer).pipe(stream);
   });
 };
 
-export default {
+module.exports = {
   uploadImage,
 };
