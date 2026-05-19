@@ -77,6 +77,8 @@ function Home() {
                   content={post.content}
                   author={post.author?.name}
                   createdAt={post.createdAt}
+                  categories={post.categories || []}
+                  onCategoryClick={setActiveCategory}
                 />
               ))}
             </div>
