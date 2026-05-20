@@ -8,6 +8,7 @@ const router = Router();
 const authRoutes = require("./auth.routes");
 const postRoutes = require("./post.routes");
 const categoryRoutes = require("./category.routes");
+const uploadRoutes = require('./upload.routes');
 
 // Health check
 router.get('/health', (req, res) => {
@@ -18,5 +19,6 @@ router.get('/health', (req, res) => {
 router.use("/auth", authRoutes);
 router.use("/posts", postRoutes);
 router.use("/categories", categoryRoutes);
+router.use("/upload", uploadRoutes);
 
 module.exports = router;
