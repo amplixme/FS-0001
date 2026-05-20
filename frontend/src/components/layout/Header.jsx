@@ -41,6 +41,12 @@ function Header() {
                 Logout
               </button>
               <Link
+                to="/categorias"
+                className={buttonVariants({ variant: 'ghost' })}
+              >
+                Categorías
+              </Link>
+              <Link
                 to="/posts/create"
                 className={buttonVariants({ variant: 'default' })}
               >
@@ -91,6 +97,12 @@ function Header() {
             {isAuthenticated ? (
               <>
                 <span className="text-sm font-medium">{user.name}</span>
+                <Link
+                  to="/categorias"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Categorías
+                </Link>
                 <button
                   onClick={logout}
                   className={buttonVariants({ variant: 'outline' })}
