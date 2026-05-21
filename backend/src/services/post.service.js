@@ -13,23 +13,34 @@ const createPost = async ({
     data: { title, content, published, authorId, coverImage },
     include: {
       author: { select: { name: true } },
+      categories: true,
     },
   });
 
   return post;
 };
 
-const getAllPosts = async () => {
+const getAllPosts = async ({ categorySlug } = {}) => {
+  const where = {
+    published: true,
+    ...(categorySlug && {
+      categories: {
+        some:{
+          slug: categorySlug,
+        },
+      },
+    }),
+  };
+
   const posts = await prisma.post.findMany({
-    where: {
-      published: true,
-    },
+    where,
     include: {
       author: {
         select: {
           name: true,
         },
       },
+      categories: true,
     },
     orderBy: {
       createdAt: 'desc',
@@ -51,6 +62,7 @@ const getPostById = async (id) => {
           name: true,
         },
       },
+      categories: true,
     },
   });
 
@@ -92,6 +104,7 @@ const updatePost = async ({ id, data, user }) => {
           name: true,
         },
       },
+      categories: true,
     },
   });
 
