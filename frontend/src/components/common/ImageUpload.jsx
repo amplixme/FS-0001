@@ -12,6 +12,7 @@ function ImageUpload({ value, onChange }) {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState('');
+  const [isDragging, setIsDragging] = useState(false);
 
   const validateFile = (file) => {
     const allowedTypes = [
@@ -93,12 +94,31 @@ function ImageUpload({ value, onChange }) {
     onChange('');
   };
 
+  const handleDragOver = (event) => {
+    event.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+    setIsDragging(false);
+    const file = event.dataTransfer.files?.[0];
+    handleFile(file);
+  };
+
   return (
     <div className="space-y-3">
       {!preview ? (
         <Card
           onClick={() => inputRef.current?.click()}
-          className="border-dashed cursor-pointer hover:bg-muted/40 transition-colors"
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
+          className={`border-dashed cursor-pointer ${isDragging ? 'bg-blue-50 border-blue-500' : 'hover:bg-muted/40'} transition-colors`}
         >
           <div className="flex flex-col items-center justify-center py-10 px-6 text-center">
             <ImagePlus className="w-10 h-10 text-gray-400 mb-3" />
