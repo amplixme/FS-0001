@@ -124,7 +124,7 @@ function ImageUpload({ value, onChange }) {
             <ImagePlus className="w-10 h-10 text-gray-400 mb-3" />
 
             <p className="font-medium text-sm">
-              Hacé click para seleccionar una imagen
+              Arrastra una imagen o haz click para subir
             </p>
 
             <p className="text-xs text-gray-500 mt-1">
