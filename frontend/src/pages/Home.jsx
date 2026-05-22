@@ -76,6 +76,7 @@ function Home() {
                   title={post.title}
                   content={post.content}
                   author={post.author?.name}
+                  coverImage={post.coverImage}
                   createdAt={post.createdAt}
                   categories={post.categories || []}
                   onCategoryClick={setActiveCategory}
