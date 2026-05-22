@@ -1,4 +1,4 @@
-import { User, Image as ImageIcon } from 'lucide-react'; // Sumamos ImageIcon
+import { User, Image as ImageIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
@@ -42,7 +42,7 @@ function PostCard({
             src={coverImage}
             alt={title}
             loading="lazy"
-            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105" // Criterio: Responsive object-fit cover
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
           />
         ) : (
           <div className="w-full h-full bg-linear-to-br from-slate-700 via-slate-800 to-slate-900 flex flex-col items-center justify-center gap-2">
