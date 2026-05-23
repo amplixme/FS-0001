@@ -19,12 +19,15 @@ function EditPost() {
     handleSubmit,
     reset,
     watch,
+    getValues,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       title: '',
       content: '',
       published: false,
+      categories: [],
     },
   });
 
@@ -51,6 +54,7 @@ function EditPost() {
           title: post.title,
           content: post.content,
           published: post.published,
+          categories: post.categories.map((category) => category.id),
         });
       } catch (error) {
         setServerError(error.message || 'No se pudo cargar el post');
@@ -82,6 +86,8 @@ function EditPost() {
         register={register}
         errors={errors}
         watch={watch}
+        getValues={getValues}
+        setValue={setValue}
         isSubmitting={isSubmitting}
         submitLabel="Guardar cambios"
         loadingLabel="Guardando..."
