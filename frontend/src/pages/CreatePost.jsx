@@ -13,10 +13,13 @@ function CreatePost() {
     register,
     handleSubmit,
     watch,
+    getValues,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       published: false,
+      categories: [],
     },
   });
 
@@ -36,6 +39,8 @@ function CreatePost() {
         register={register}
         errors={errors}
         watch={watch}
+        getValues={getValues}
+        setValue={setValue}
         isSubmitting={isSubmitting}
         submitLabel="Crear artículo"
         loadingLabel="Creando..."
