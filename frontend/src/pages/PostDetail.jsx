@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import { toast } from 'sonner';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import { getById, delete as deletePost } from '@/services/post.service';
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2, Image as ImageIcon } from 'lucide-react';
 
 function PostDetail() {
   const { id } = useParams();
@@ -76,7 +76,24 @@ function PostDetail() {
         </div>
       </div>
 
-      <div className="text-lg leading-relaxed text-on-surface-variant mb-10">
+      {post.coverImage ? (
+        <div className="w-full h-64 md:h-96 rounded-2xl overflow-hidden mb-10 shadow-sm">
+          <img
+            src={post.coverImage}
+            alt={post.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      ) : (
+        <div className="w-full h-48 rounded-2xl bg-linear-to-br from-slate-800 to-slate-900 flex flex-col items-center justify-center gap-2 mb-10 opacity-40">
+          <ImageIcon className="w-6 h-6 text-slate-400" />
+          <span className="text-xs text-slate-500 uppercase tracking-wider">
+            Sin imagen de portada
+          </span>
+        </div>
+      )}
+
+      <div className="text-lg leading-relaxed text-on-surface-variant mb-10 whitespace-pre-line">
         {post.content}
       </div>
 

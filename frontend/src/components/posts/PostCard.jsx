@@ -1,4 +1,4 @@
-import { User } from 'lucide-react';
+import { User, Image as ImageIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 
@@ -8,6 +8,7 @@ function PostCard({
   content,
   author,
   createdAt,
+  coverImage,
   categories = [],
   onCategoryClick,
 }) {
@@ -32,12 +33,28 @@ function PostCard({
 
   return (
     <Card
-      className="w-full max-w-sm cursor-pointer hover:shadow-lg transition-shadow rounded-2xl overflow-hidden shadow-md"
+      className="w-full max-w-sm cursor-pointer hover:shadow-lg transition-shadow rounded-2xl overflow-hidden shadow-md flex flex-col"
       onClick={() => navigate(`/posts/${id}`)}
     >
-      <div className="relative h-48 bg-linear-to-b from-teal-400 to-teal-500" />
+      <div className="w-full aspect-video overflow-hidden relative bg-slate-100">
+        {coverImage ? (
+          <img
+            src={coverImage}
+            alt={title}
+            loading="lazy"
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          />
+        ) : (
+          <div className="w-full h-full bg-linear-to-br from-slate-700 via-slate-800 to-slate-900 flex flex-col items-center justify-center gap-2">
+            <ImageIcon className="w-8 h-8 text-slate-400/70" />
+            <span className="text-xs text-slate-500 font-medium tracking-wide uppercase">
+              Sin portada
+            </span>
+          </div>
+        )}
+      </div>
 
-      <CardContent className="pt-2">
+      <CardContent className="pt-4 flex-1">
         <div className="flex flex-wrap gap-2 mb-4">
           {visibleCategories.map((cat) => (
             <span
@@ -55,11 +72,15 @@ function PostCard({
           )}
         </div>
 
-        <h2 className="text-xl font-bold text-gray-900 mb-3">{title}</h2>
-        <p className="text-sm text-gray-600 leading-relaxed">{excerpt}</p>
+        <h2 className="text-xl font-bold text-gray-900 mb-3 line-clamp-2">
+          {title}
+        </h2>
+        <p className="text-sm text-gray-600 leading-relaxed line-clamp-3">
+          {excerpt}
+        </p>
       </CardContent>
 
-      <CardFooter className="border-t border-gray-200">
+      <CardFooter className="border-t border-gray-100 pt-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
             <User className="w-6 h-6 text-white" />
