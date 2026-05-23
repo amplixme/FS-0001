@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import {
@@ -6,11 +7,15 @@ import {
   FieldContent,
   FieldError,
 } from '@/components/ui/field';
+import { Checkbox } from '@/components/ui/checkbox';
+import { getAll as getCategories } from '@/services/category.service';
 
 function PostForm({
   register,
   errors,
   watch,
+  getValues,
+  setValue,
   isSubmitting,
   submitLabel,
   loadingLabel,
@@ -18,6 +23,20 @@ function PostForm({
   title,
   subtitle,
 }) {
+  const [categories, setCategories] = useState([]);
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await getCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchCategories();
+  }, []);
+
   const published = watch('published');
 
   return (
@@ -64,6 +83,52 @@ function PostForm({
               {errors.content && (
                 <FieldError>{errors.content.message}</FieldError>
               )}
+            </Field>
+
+            <Field>
+              <FieldLabel>Categorías</FieldLabel>
+
+              <div className="flex flex-wrap gap-3 mt-2">
+                {categories.map((category) => {
+                  const selectedCategories = getValues('categories') || [];
+                  const isChecked = selectedCategories.includes(category.id);
+
+                  return (
+                    <label
+                      key={category.id}
+                      className="flex items-center gap-2 rounded-full border px-4 py-2 cursor-pointer hover:bg-gray-50 transition-colors"
+                    >
+                      <Checkbox
+                        checked={isChecked}
+                        onCheckedChange={(checked) => {
+                          const currentCategories =
+                            getValues('categories') || [];
+
+                          if (checked) {
+                            setValue(
+                              'categories',
+                              [...currentCategories, category.id],
+                              { shouldValidate: true },
+                            );
+                          } else {
+                            setValue(
+                              'categories',
+                              currentCategories.filter(
+                                (id) => id !== category.id,
+                              ),
+                              { shouldValidate: true },
+                            );
+                          }
+                        }}
+                      />
+
+                      <span className="text-sm text-gray-700">
+                        {category.name}
+                      </span>
+                    </label>
+                  );
+                })}
+              </div>
             </Field>
 
             <Field>
