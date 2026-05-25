@@ -26,6 +26,7 @@ model User {
   updatedAt DateTime @updatedAt
   role Role @default(USER)
   posts Post[]
+  comments Comment[]
 }
 
 model Post {
@@ -37,6 +38,7 @@ model Post {
   authorId  String
   author    User     @relation(fields: [authorId], references: [id])
   categories Category[]  @relation("PostCategories")
+  comments Comment[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -46,4 +48,15 @@ model Category {
   name  String @unique
   slug  String @unique
   posts Post[] @relation("PostCategories")
+}
+
+model Comment {
+  id        String @id @default(uuid())
+  content   String
+  postId    String
+  authorId  String
+  post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  author    User   @relation(fields: [authorId], references: [id])
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
