@@ -70,4 +70,4 @@ const deleteComment = async ({ id, user }) => {
   });
 };
 
-module.exports = { createComment };
+module.exports = { createComment, updateComment, deleteComment };
