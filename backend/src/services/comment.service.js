@@ -21,6 +21,19 @@ const createComment = async ({ content, postId, authorId }) => {
   return comment;
 };
 
+const getCommentsByPost = async (postId) => {
+  const comments = await prisma.comment.findMany({
+    where: { postId },
+    include: {
+      author: { select: { name: true } },
+    },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  return comments;
+};
+
+module.exports = { createComment, getCommentsByPost };
 const updateComment = async ({ id, content, user }) => {
   const comment = await prisma.comment.findUnique({
     where: { id },

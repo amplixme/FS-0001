@@ -1,4 +1,4 @@
-const { createComment, updateComment, deleteComment } = require('../services/comment.service');
+const { createComment, getCommentsByPost, updateComment, deleteComment } = require('../services/comment.service');
 const { success } = require('../utils/response');
 
 const create = async (req, res, next) => {
@@ -9,6 +9,16 @@ const create = async (req, res, next) => {
 
     const comment = await createComment({ content, postId, authorId });
     return success(res, comment, 201);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getByPost = async (req, res, next) => {
+  try {
+    const { postId } = req.params;
+    const comments = await getCommentsByPost(postId);
+    return success(res, comments);
   } catch (error) {
     next(error);
   }
@@ -48,4 +58,4 @@ const remove = async (req, res, next) => {
   }
 };
 
-module.exports = { create, update, remove };
+module.exports = { create, getByPost, update, remove };
