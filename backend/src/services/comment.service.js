@@ -34,3 +34,53 @@ const getCommentsByPost = async (postId) => {
 };
 
 module.exports = { createComment, getCommentsByPost };
+const updateComment = async ({ id, content, user }) => {
+  const comment = await prisma.comment.findUnique({
+    where: { id },
+  });
+
+  if (!comment) {
+    throw new AppError('Comentario no encontrado', 404);
+  }
+
+  if (comment.authorId !== user.id) {
+    throw new AppError('No autorizado', 403);
+  }
+
+  const updatedComment = await prisma.comment.update({
+    where: { id },
+    data: { content },
+    include: {
+      author: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
+  return updatedComment;
+};
+
+const deleteComment = async ({ id, user }) => {
+  const comment = await prisma.comment.findUnique({
+    where: { id },
+  });
+
+  if (!comment) {
+    throw new AppError('Comentario no encontrado', 404);
+  }
+
+  const isAuthor = comment.authorId === user.id;
+  const isAdmin = user.role === 'ADMIN';
+
+  if (!isAuthor && !isAdmin) {
+    throw new AppError('No autorizado', 403);
+  }
+
+  await prisma.comment.delete({
+    where: { id },
+  });
+};
+
+module.exports = { createComment, updateComment, deleteComment };
