@@ -1,4 +1,4 @@
-const { createComment } = require('../services/comment.service');
+const { createComment, updateComment, deleteComment } = require('../services/comment.service');
 const { success } = require('../utils/response');
 
 const create = async (req, res, next) => {
@@ -14,4 +14,38 @@ const create = async (req, res, next) => {
   }
 };
 
-module.exports = { create };
+const update = async (req, res, next) => {
+  try {
+    const { content } = req.body;
+    const { id } = req.params;
+
+    const comment = await updateComment({
+      id,
+      content,
+      user: req.user,
+    });
+
+    return success(res, comment);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await deleteComment({
+      id,
+      user: req.user,
+    });
+
+    return success(res, {
+      message: 'Comentario eliminado correctamente',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+module.exports = { create, update, remove };
