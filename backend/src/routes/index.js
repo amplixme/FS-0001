@@ -22,5 +22,6 @@ router.use("/posts", postRoutes);
 router.use("/categories", categoryRoutes);
 router.use("/upload", uploadRoutes);
 router.use('/posts/:postId/comments', commentRoutes);
+router.use("/posts/:postId/comments", commentRoutes);
 
 module.exports = router;

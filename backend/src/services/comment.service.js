@@ -33,7 +33,6 @@ const getCommentsByPost = async (postId) => {
   return comments;
 };
 
-module.exports = { createComment, getCommentsByPost };
 const updateComment = async ({ id, content, user }) => {
   const comment = await prisma.comment.findUnique({
     where: { id },
@@ -83,4 +82,4 @@ const deleteComment = async ({ id, user }) => {
   });
 };
 
-module.exports = { createComment, updateComment, deleteComment };
+module.exports = { createComment, getCommentsByPost, updateComment, deleteComment };
