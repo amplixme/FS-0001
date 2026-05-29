@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import { getById, delete as deletePost } from '@/services/post.service';
 import { Pencil, Trash2, Image as ImageIcon } from 'lucide-react';
+import CommentSection from '@/components/comments/CommentSection';
 
 function PostDetail() {
   const { id } = useParams();
@@ -96,7 +97,7 @@ function PostDetail() {
       <div className="text-lg leading-relaxed text-on-surface-variant mb-10 whitespace-pre-line">
         {post.content}
       </div>
-
+      <CommentSection postId={id} />
       {isAuthor && (
         <div className="flex items-center justify-end gap-3 mt-16 pt-8 border-t border-outline-variant/20">
           <button
