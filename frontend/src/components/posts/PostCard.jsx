@@ -19,7 +19,6 @@ function PostCard({
     content?.length > 150 ? content.slice(0, 150) + '...' : content;
 
   const date = formatRelativeTime(createdAt);
-  console.log('createdAt raw:', createdAt, '→', date);
 
   const visibleCategories = categories.slice(0, 3);
   const remainingCount = categories.length - visibleCategories.length;
