@@ -79,6 +79,7 @@ function Home() {
                   coverImage={post.coverImage}
                   createdAt={post.createdAt}
                   categories={post.categories || []}
+                  commentsCount={post.commentCount}
                   onCategoryClick={setActiveCategory}
                 />
               ))}
