@@ -10,6 +10,7 @@ function PostCard({
   createdAt,
   coverImage,
   categories = [],
+  commentsCount = 0,
   onCategoryClick,
 }) {
   const navigate = useNavigate();
@@ -85,8 +86,9 @@ function PostCard({
           <div className="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
             <User className="w-6 h-6 text-white" />
           </div>
+
           <div>
-            <p className="text-sm font-semibold text-gray-900">{author}</p>
+            <p className="text-sm font-semibold text-gray-900">{author} 💬 {commentsCount ?? 0}</p>
             <p className="text-xs text-gray-500">{date}</p>
           </div>
         </div>
