@@ -12,6 +12,8 @@ const getInitials = (name = 'Usuario') => {
 };
 
 function CommentSection({ postId }) {
+  const { isAuthenticated } = useAuth();
+
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
@@ -72,28 +74,42 @@ function CommentSection({ postId }) {
         Comentarios ({comments.length})
       </h3>
 
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white rounded-2xl p-4 shadow-sm mb-12 border border-slate-100 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all"
-      >
-        <textarea
-          className="w-full bg-transparent border-none focus:ring-0 text-slate-900 placeholder:text-slate-400 resize-none text-sm"
-          placeholder="Escribe un comentario..."
-          rows={3}
-          value={content}
-          onChange={(event) => setContent(event.target.value)}
-        />
+      {isAuthenticated ? (
+        <form
+          onSubmit={handleSubmit}
+          className="bg-white rounded-2xl p-4 shadow-sm mb-12 border border-slate-100 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all"
+        >
+          <textarea
+            className="w-full bg-transparent border-none focus:ring-0 text-slate-900 placeholder:text-slate-400 resize-none text-sm"
+            placeholder="Escribe un comentario..."
+            rows={3}
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
+          />
 
-        <div className="flex justify-end mt-2">
-          <button
-            type="submit"
-            disabled={submitting || !content.trim()}
-            className="bg-blue-700 text-white px-6 py-2 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-blue-700/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {submitting ? 'Comentando...' : 'Comentar'}
-          </button>
+          <div className="flex justify-end mt-2">
+            <button
+              type="submit"
+              disabled={submitting || !content.trim()}
+              className="bg-blue-700 text-white px-6 py-2 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-blue-700/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {submitting ? 'Comentando...' : 'Comentar'}
+            </button>
+          </div>
+        </form>
+      ) : (
+        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-12 text-center">
+          <p className="text-slate-600 text-sm">
+            Inicia sesión para comentar.{' '}
+            <Link
+              to="/login"
+              className="text-blue-700 font-semibold hover:underline"
+            >
+              Ir al login
+            </Link>
+          </p>
         </div>
-      </form>
+      )}
 
       {loading && (
         <p className="text-slate-500 text-sm">Cargando comentarios...</p>
