@@ -1,5 +1,14 @@
-import { useEffect, useState } from 'react';
-import { create, getByPostId } from '@/services/comment.service';
+import { useCallback, useEffect, useState } from 'react';
+import {
+  create,
+  delete as deleteComment,
+  getByPostId,
+  update,
+} from '@/services/comment.service';
+import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import ConfirmModal from '@/components/common/ConfirmModal';
+import { Pencil, Trash2 } from 'lucide-react';
 import { formatRelativeTime } from '../../utils/formatRelativeTime.js';
 
 const getInitials = (name = 'Usuario') => {
@@ -12,15 +21,19 @@ const getInitials = (name = 'Usuario') => {
 };
 
 function CommentSection({ postId }) {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, user } = useAuth();
 
   const [comments, setComments] = useState([]);
   const [content, setContent] = useState('');
+  const [editingCommentId, setEditingCommentId] = useState(null);
+  const [editingContent, setEditingContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [deletingCommentId, setDeletingCommentId] = useState(null);
   const [error, setError] = useState('');
 
-  const fetchComments = async () => {
+  const fetchComments = useCallback(async () => {
     try {
       setError('');
       setLoading(true);
@@ -33,13 +46,14 @@ function CommentSection({ postId }) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [postId]);
 
   useEffect(() => {
     if (postId) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchComments();
     }
-  }, [postId]);
+  }, [fetchComments, postId]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -65,6 +79,60 @@ function CommentSection({ postId }) {
       setError(error.message || 'No se pudo crear el comentario');
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleStartEditing = (comment) => {
+    setEditingCommentId(comment.id);
+    setEditingContent(comment.content);
+    setError('');
+  };
+
+  const handleCancelEditing = () => {
+    setEditingCommentId(null);
+    setEditingContent('');
+  };
+
+  const handleSaveEditing = async (commentId) => {
+    const trimmedContent = editingContent.trim();
+
+    if (!trimmedContent) {
+      return;
+    }
+
+    try {
+      setSaving(true);
+      setError('');
+
+      const response = await update(commentId, {
+        content: trimmedContent,
+      });
+
+      setComments((currentComments) =>
+        currentComments.map((comment) =>
+          comment.id === commentId ? response.data : comment
+        )
+      );
+
+      handleCancelEditing();
+    } catch (error) {
+      setError(error.message || 'No se pudo actualizar el comentario');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (commentId) => {
+    try {
+      setDeletingCommentId(commentId);
+      setError('');
+
+      await deleteComment(commentId);
+      await fetchComments();
+    } catch (error) {
+      setError(error.message || 'No se pudo eliminar el comentario');
+    } finally {
+      setDeletingCommentId(null);
     }
   };
 
@@ -127,6 +195,8 @@ function CommentSection({ postId }) {
         <div className="space-y-8">
           {comments.map((comment) => {
             const authorName = comment.author?.name || 'Usuario';
+            const isOwnComment = user?.id === comment.authorId;
+            const isEditing = editingCommentId === comment.id;
 
             return (
               <article key={comment.id} className="group">
@@ -146,11 +216,72 @@ function CommentSection({ postId }) {
                           {formatRelativeTime(comment.createdAt)}
                         </span>
                       </div>
+
+                      {isOwnComment && !isEditing && (
+                        <div className="flex items-center gap-2">
+                          <button
+                            type="button"
+                            onClick={() => handleStartEditing(comment)}
+                            className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-blue-700 transition-colors"
+                          >
+                            <Pencil size={14} />
+                            Editar
+                          </button>
+
+                          <ConfirmModal
+                            description="Â¿EstÃ¡s seguro de que deseas eliminar este comentario? Esta acciÃ³n no se puede deshacer."
+                            onConfirm={() => handleDelete(comment.id)}
+                            trigger={
+                              <button
+                                type="button"
+                                disabled={deletingCommentId === comment.id}
+                                className="inline-flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-red-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                              >
+                                <Trash2 size={14} />
+                                Eliminar
+                              </button>
+                            }
+                          />
+                        </div>
+                      )}
                     </div>
 
-                    <p className="text-slate-600 leading-relaxed text-sm">
-                      {comment.content}
-                    </p>
+                    {isEditing ? (
+                      <div className="mt-3">
+                        <textarea
+                          className="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 resize-none"
+                          rows={3}
+                          value={editingContent}
+                          onChange={(event) =>
+                            setEditingContent(event.target.value)
+                          }
+                        />
+
+                        <div className="flex justify-end gap-2 mt-2">
+                          <button
+                            type="button"
+                            onClick={handleCancelEditing}
+                            disabled={saving}
+                            className="px-4 py-2 rounded-full border border-slate-300 text-slate-700 text-xs font-bold hover:bg-slate-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            Cancelar
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleSaveEditing(comment.id)}
+                            disabled={saving || !editingContent.trim()}
+                            className="px-4 py-2 rounded-full bg-blue-700 text-white text-xs font-bold hover:shadow-lg hover:shadow-blue-700/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                          >
+                            {saving ? 'Guardando...' : 'Guardar'}
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-slate-600 leading-relaxed text-sm">
+                        {comment.content}
+                      </p>
+                    )}
                   </div>
                 </div>
               </article>
