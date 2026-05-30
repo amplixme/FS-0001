@@ -6,6 +6,7 @@ import ConfirmModal from '@/components/common/ConfirmModal';
 import { getById, delete as deletePost } from '@/services/post.service';
 import { Pencil, Trash2, Image as ImageIcon } from 'lucide-react';
 import CommentSection from '@/components/comments/CommentSection';
+import { formatRelativeTime } from '../utils/formatRelativeTime.js';
 
 function PostDetail() {
   const { id } = useParams();
@@ -68,11 +69,7 @@ function PostDetail() {
             {post.author?.name}
           </span>
           <span className="text-xs text-outline">
-            {new Date(post.createdAt).toLocaleDateString('es-AR', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric',
-            })}
+            {formatRelativeTime(post.createdAt)}
           </span>
         </div>
       </div>

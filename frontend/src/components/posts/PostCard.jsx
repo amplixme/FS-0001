@@ -1,6 +1,7 @@
 import { User, Image as ImageIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { formatRelativeTime } from '../../utils/formatRelativeTime.js';
 
 function PostCard({
   id,
@@ -17,11 +18,8 @@ function PostCard({
   const excerpt =
     content?.length > 150 ? content.slice(0, 150) + '...' : content;
 
-  const date = new Date(createdAt).toLocaleDateString('es-AR', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
+  const date = formatRelativeTime(createdAt);
+  console.log('createdAt raw:', createdAt, '→', date);
 
   const visibleCategories = categories.slice(0, 3);
   const remainingCount = categories.length - visibleCategories.length;

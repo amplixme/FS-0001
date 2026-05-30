@@ -1,34 +1,6 @@
 import { useEffect, useState } from 'react';
 import { create, getByPostId } from '@/services/comment.service';
-
-const getRelativeTime = (date) => {
-  const now = new Date();
-  const commentDate = new Date(date);
-  const diffInSeconds = Math.floor((now - commentDate) / 1000);
-
-  if (diffInSeconds < 60) return 'Hace unos segundos';
-
-  const diffInMinutes = Math.floor(diffInSeconds / 60);
-  if (diffInMinutes < 60) {
-    return `Hace ${diffInMinutes} ${diffInMinutes === 1 ? 'minuto' : 'minutos'}`;
-  }
-
-  const diffInHours = Math.floor(diffInMinutes / 60);
-  if (diffInHours < 24) {
-    return `Hace ${diffInHours} ${diffInHours === 1 ? 'hora' : 'horas'}`;
-  }
-
-  const diffInDays = Math.floor(diffInHours / 24);
-  if (diffInDays < 30) {
-    return `Hace ${diffInDays} ${diffInDays === 1 ? 'día' : 'días'}`;
-  }
-
-  return commentDate.toLocaleDateString('es-AR', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-};
+import { formatRelativeTime } from '../../utils/formatRelativeTime.js';
 
 const getInitials = (name = 'Usuario') => {
   return name
@@ -84,10 +56,7 @@ function CommentSection({ postId }) {
         content: trimmedContent,
       });
 
-      setComments((currentComments) => [
-        response.data,
-        ...currentComments,
-      ]);
+      setComments((currentComments) => [response.data, ...currentComments]);
 
       setContent('');
     } catch (error) {
@@ -127,16 +96,10 @@ function CommentSection({ postId }) {
       </form>
 
       {loading && (
-        <p className="text-slate-500 text-sm">
-          Cargando comentarios...
-        </p>
+        <p className="text-slate-500 text-sm">Cargando comentarios...</p>
       )}
 
-      {!loading && error && (
-        <p className="text-red-500 text-sm">
-          {error}
-        </p>
-      )}
+      {!loading && error && <p className="text-red-500 text-sm">{error}</p>}
 
       {!loading && !error && comments.length === 0 && (
         <p className="text-slate-500 text-sm">
@@ -164,7 +127,7 @@ function CommentSection({ postId }) {
                         </span>
 
                         <span className="text-xs text-slate-500">
-                          {getRelativeTime(comment.createdAt)}
+                          {formatRelativeTime(comment.createdAt)}
                         </span>
                       </div>
                     </div>
@@ -184,3 +147,4 @@ function CommentSection({ postId }) {
 }
 
 export default CommentSection;
+
