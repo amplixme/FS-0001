@@ -107,6 +107,50 @@ const toggleUserRole = async ({ id, currentUserId }) => {
   return updatedUser;
 };
 
+const updateUser = async ({ id, data, currentUserId }) => {
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!user) {
+    throw new AppError('Usuario no encontrado', 404);
+  }
+
+  if (data.email && data.email !== user.email) {
+    const existingUser = await prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (existingUser) {
+      throw new AppError('El email ya está registrado', 409);
+    }
+  }
+
+  if (
+    id === currentUserId &&
+    data.role &&
+    data.role !== user.role
+  ) {
+    throw new AppError(
+      'No puedes modificar tu propio rol',
+      400,
+    );
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: {
+      name: data.name,
+      email: data.email,
+      role: data.role,
+    },
+  });
+
+  return updatedUser;
+};
+
 module.exports = {
-  getStats, getUsers, createAdminUser, toggleUserRole,
+  getStats, getUsers, createAdminUser, toggleUserRole, updateUser,
 };
