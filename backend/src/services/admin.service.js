@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const { createUser } = require('./auth.service');
 
 const prisma = new PrismaClient();
 
@@ -58,6 +59,28 @@ const getUsers = async () => {
   }));
 };
 
+const createAdminUser = async ({
+  name,
+  email,
+  password,
+  role,
+}) => {
+  const user = await createUser({
+    name,
+    email,
+    password,
+    role,
+  });
+
+  return {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    createdAt: user.createdAt,
+  };
+};
+
 module.exports = {
-  getStats, getUsers,
+  getStats, getUsers, createAdminUser,
 };

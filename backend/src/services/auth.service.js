@@ -3,7 +3,22 @@ const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const jwt = require('jsonwebtoken');
 
-const registerUser = async ({ name, email, password }) => {
+const createUser = async ({
+  name,
+  email,
+  password,
+  role = 'USER',
+}) => {
+  const existingUser = await prisma.user.findUnique({
+    where: { email },
+  });
+
+  if (existingUser) {
+    const error = new Error('El email ya está registrado');
+    error.status = 409;
+    throw error;
+  }
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
@@ -11,11 +26,20 @@ const registerUser = async ({ name, email, password }) => {
       name,
       email,
       password: hashedPassword,
-      role: 'USER',
+      role,
     },
   });
 
   return user;
+};
+
+const registerUser = async ({ name, email, password }) => {
+  return createUser({
+      name,
+      email,
+      password: hashedPassword,
+      role: 'USER',
+  });
 };
 
 const loginUser = async ({ email, password }) => {
@@ -49,4 +73,4 @@ const loginUser = async ({ email, password }) => {
   };
 };
 
-module.exports = { registerUser, loginUser };
+module.exports = { registerUser, loginUser, createUser };
