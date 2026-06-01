@@ -1,4 +1,5 @@
 const { PrismaClient } = require('@prisma/client');
+const AppError = require('../utils/AppErrors');
 const { createUser } = require('./auth.service');
 
 const prisma = new PrismaClient();
@@ -81,6 +82,31 @@ const createAdminUser = async ({
   };
 };
 
+const toggleUserRole = async ({ id, currentUserId }) => {
+  if (id === currentUserId) {
+    throw new AppError('No puedes modificar tu propio rol', 400);
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id },
+  });
+
+  if (!user) {
+    throw new AppError('Usuario no encontrado', 404);
+  }
+
+  const newRole = user.role === 'ADMIN' ? 'USER' : 'ADMIN';
+
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: {
+      role: newRole,
+    },
+  });
+
+  return updatedUser;
+};
+
 module.exports = {
-  getStats, getUsers, createAdminUser,
+  getStats, getUsers, createAdminUser, toggleUserRole,
 };

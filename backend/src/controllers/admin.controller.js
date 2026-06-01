@@ -1,4 +1,4 @@
-const { getStats, getUsers, createAdminUser } = require('../services/admin.service');
+const { getStats, getUsers, createAdminUser, toggleUserRole } = require('../services/admin.service');
 const { success } = require('../utils/response');
 
 const stats = async (req, res, next) => {
@@ -31,8 +31,22 @@ const createUser = async (req, res, next) => {
   }
 };
 
+const changeRole = async (req, res, next) => {
+  try {
+    const user = await toggleUserRole({
+      id: req.params.id,
+      currentUserId: req.user.id,
+    });
+
+    return success(res, user);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   stats,
   users,
   createUser,
+  changeRole,
 };
