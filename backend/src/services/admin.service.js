@@ -29,6 +29,35 @@ const getStats = async () => {
   };
 };
 
+const getUsers = async () => {
+  const users = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+      _count: {
+        select: {
+          posts: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  return users.map((user) => ({
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+    createdAt: user.createdAt,
+    postsCount: user._count.posts,
+  }));
+};
+
 module.exports = {
-  getStats,
+  getStats, getUsers,
 };

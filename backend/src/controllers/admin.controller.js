@@ -1,4 +1,4 @@
-const { getStats } = require('../services/admin.service');
+const { getStats, getUsers } = require('../services/admin.service');
 const { success } = require('../utils/response');
 
 const stats = async (req, res, next) => {
@@ -11,6 +11,17 @@ const stats = async (req, res, next) => {
   }
 };
 
+const users = async (req, res, next) => {
+  try {
+    const data = await getUsers();
+
+    return success(res, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   stats,
+  users,
 };
