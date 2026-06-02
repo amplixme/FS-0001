@@ -169,6 +169,20 @@ const deleteUser = async ({ userId, currentUserId }) => {
   });
 };
 
+const adminDeletePost = async (id) => {
+  const post = await prisma.post.findUnique({
+    where: { id },
+  });
+
+  if (!post) {
+    throw new AppError('Post no encontrado', 404);
+  }
+
+  await prisma.post.delete({
+    where: { id },
+  });
+};
+
 module.exports = {
-  getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser,
+  getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost,
 };

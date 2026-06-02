@@ -1,4 +1,4 @@
-const { getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser } = require('../services/admin.service');
+const { getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost } = require('../services/admin.service');
 const { success } = require('../utils/response');
 
 const stats = async (req, res, next) => {
@@ -73,6 +73,18 @@ const removeUser = async (req, res, next) => {
   }
 };
 
+const removePost = async (req, res, next) => {
+  try {
+    await adminDeletePost(req.params.id);
+
+    return success(res, {
+      message: 'Post eliminado correctamente',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   stats,
   users,
@@ -80,4 +92,5 @@ module.exports = {
   changeRole,
   update,
   removeUser,
+  removePost,
 };
