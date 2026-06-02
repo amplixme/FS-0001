@@ -27,13 +27,16 @@ const create = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const { category } = req.query;
+    const { category, page, limit, sort } = req.query;
 
     const posts = await getAllPosts({
       categorySlug: category,
+      page: page ? parseInt(page, 10) : undefined,
+      limit: limit ? parseInt(limit, 10) : undefined,
+      sort,
     });
 
-    return success(res, posts);
+    return res.json(posts);
   } catch (error) {
     next(error);
   }

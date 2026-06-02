@@ -20,42 +20,49 @@ const createPost = async ({
   return post;
 };
 
-const getAllPosts = async ({ categorySlug } = {}) => {
+const getAllPosts = async ({
+  categorySlug,
+  page = 1,
+  limit = 10,
+  sort = 'newest',
+} = {}) => {
+  const sortMap = {
+    newest: { createdAt: 'desc' },
+    oldest: { createdAt: 'asc' },
+    comments: { comments: { _count: 'desc' } },
+  };
+
+  const orderBy = sortMap[sort] || sortMap.newest;
+  const skip = (page - 1) * limit;
+
   const where = {
     published: true,
     ...(categorySlug && {
-      categories: {
-        some:{
-          slug: categorySlug,
-        },
-      },
+      categories: { some: { slug: categorySlug } },
     }),
   };
 
-  const posts = await prisma.post.findMany({
-    where,
-    include: {
-      author: {
-        select: {
-          name: true,
-        },
+  const [posts, total] = await Promise.all([
+    prisma.post.findMany({
+      where,
+      skip,
+      take: limit,
+      orderBy,
+      include: {
+        author: { select: { name: true } },
+        categories: true,
+        _count: { select: { comments: true } },
       },
-      categories: true,
-      _count: {
-        select: {
-          comments: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+    }),
+    prisma.post.count({ where }),
+  ]);
 
-  return posts.map((post) => ({
-    ...post,
-    commentCount: post._count.comments,
-  }));
+  return {
+    data: posts.map((p) => ({ ...p, commentCount: p._count.comments })),
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  };
 };
 
 const getPostById = async (id) => {
