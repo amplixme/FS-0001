@@ -5,7 +5,7 @@ const router = Router();
 const authMiddleware = require('../middlewares/auth.middleware');
 const requireRole = require('../middlewares/role.middleware');
 
-const { stats, users, createUser, changeRole, update } = require('../controllers/admin.controller');
+const { stats, users, createUser, changeRole, update, removeUser } = require('../controllers/admin.controller');
 
 router.use(authMiddleware);
 router.use(requireRole('ADMIN'));
@@ -15,5 +15,6 @@ router.get('/users', users);
 router.post('/users', createUser);
 router.patch('/users/:id/role', changeRole);
 router.patch('/users/:id', update);
+router.delete('/users/:id', removeUser);
 
 module.exports = router;

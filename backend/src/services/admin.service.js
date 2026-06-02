@@ -151,6 +151,24 @@ const updateUser = async ({ id, data, currentUserId }) => {
   return updatedUser;
 };
 
+const deleteUser = async ({ userId, currentUserId }) => {
+  if (userId === currentUserId) {
+    throw new AppError('No puedes eliminar tu propio usuario', 400);
+  }
+
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new AppError('Usuario no encontrado', 404);
+  }
+
+  await prisma.user.delete({
+    where: { id: userId },
+  });
+};
+
 module.exports = {
-  getStats, getUsers, createAdminUser, toggleUserRole, updateUser,
+  getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser,
 };
