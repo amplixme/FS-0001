@@ -11,6 +11,8 @@ import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
 import Categories from './pages/Categories';
 import NotFound from './pages/NotFound';
+import ProtectedAdminRoute from './components/ProtectedAdminRoute';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -45,6 +47,14 @@ function App() {
                   <ProtectedRoute>
                     <Categories />
                   </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedAdminRoute>
+                    <Admin />
+                  </ProtectedAdminRoute>
                 }
               />
               <Route path="*" element={<NotFound />} />
