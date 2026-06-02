@@ -10,6 +10,7 @@ const postRoutes = require('./post.routes');
 const categoryRoutes = require('./category.routes');
 const uploadRoutes = require('./upload.routes');
 const commentRoutes = require('./comment.routes');
+const userRoutes = require('./user.routes');
 
 // Health check
 router.get('/health', (req, res) => {
@@ -23,5 +24,6 @@ router.use('/categories', categoryRoutes);
 router.use('/upload', uploadRoutes);
 router.use('/comments', commentRoutes);
 router.use('/posts/:postId/comments', commentRoutes);
+router.use('/users', userRoutes);
 
 module.exports = router;
