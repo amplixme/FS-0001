@@ -32,4 +32,32 @@ const getPublicProfile = async (id) => {
   };
 };
 
-module.exports = { getPublicProfile };
+const updateMyProfile = async (userId, data) => {
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+  });
+
+  if (!user) {
+    throw new AppError('Usuario no encontrado', 404);
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data: {
+      name: data.name,
+      bio: data.bio,
+      avatarUrl: data.avatarUrl,
+    },
+    select: {
+      id: true,
+      name: true,
+      bio: true,
+      avatarUrl: true,
+      role: true,
+    },
+  });
+
+  return updatedUser;
+};
+
+module.exports = { getPublicProfile, updateMyProfile };
