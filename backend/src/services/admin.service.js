@@ -183,6 +183,20 @@ const adminDeletePost = async (id) => {
   });
 };
 
+const adminDeleteComment = async (id) => {
+  const comment = await prisma.comment.findUnique({
+    where: { id },
+  });
+
+  if (!comment) {
+    throw new AppError('Comentario no encontrado', 404);
+  }
+
+  await prisma.comment.delete({
+    where: { id },
+  });
+};
+
 module.exports = {
-  getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost,
+  getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost, adminDeleteComment,
 };
