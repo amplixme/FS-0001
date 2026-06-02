@@ -38,7 +38,7 @@ model Post {
   published Boolean  @default(false)
   coverImage  String?
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   categories Category[]  @relation("PostCategories")
   comments Comment[]
   createdAt DateTime @default(now())
@@ -58,7 +58,7 @@ model Comment {
   postId    String
   authorId  String
   post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
-  author    User   @relation(fields: [authorId], references: [id])
+  author    User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
