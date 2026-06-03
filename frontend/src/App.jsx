@@ -11,6 +11,7 @@ import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
 import Categories from './pages/Categories';
 import NotFound from './pages/NotFound';
+import Profile from './pages/Profile';
 
 function App() {
   return (
@@ -48,6 +49,7 @@ function App() {
                 }
               />
               <Route path="*" element={<NotFound />} />
+              <Route path="/profile/:id" element={<Profile />} />
             </Routes>
           </Layout>
         </AuthProvider>

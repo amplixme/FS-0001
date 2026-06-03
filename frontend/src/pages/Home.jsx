@@ -76,6 +76,7 @@ function Home() {
                   title={post.title}
                   content={post.content}
                   author={post.author?.name}
+                  authorId={post.authorId}
                   coverImage={post.coverImage}
                   createdAt={post.createdAt}
                   categories={post.categories || []}
