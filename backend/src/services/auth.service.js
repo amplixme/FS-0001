@@ -37,7 +37,7 @@ const registerUser = async ({ name, email, password }) => {
   return createUser({
       name,
       email,
-      password: hashedPassword,
+      password: password,
       role: 'USER',
   });
 };
