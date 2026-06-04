@@ -23,8 +23,8 @@ function Profile() {
         const profileResponse = await getProfile(id);
         setProfile(profileResponse.data);
 
-        const postsResponse = await getAll({ authorId: id });
-        setPosts(postsResponse.data || []);
+        const postsResponse = await getAll({ authorId: id, limit: 100 });
+        setPosts(postsResponse.posts || []);
       } catch (err) {
         setError(err.message || 'No se pudo cargar el perfil');
       } finally {

@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import PostCard from '@/components/posts/PostCard';
 import CategoryFilter from '@/components/common/CategoryFilter';
+import Pagination from '@/components/common/Pagination';
 import Spinner from '@/components/common/Spinner';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import EmptyState from '@/components/common/EmptyState';
@@ -8,7 +10,12 @@ import { getAll } from '@/services/post.service';
 import { getAll as getAllCategories } from '@/services/category.service';
 
 function Home() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get('page') ?? 1);
+  const limit = Number(searchParams.get('limit') ?? 9);
+
   const [posts, setPosts] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -27,14 +34,32 @@ function Home() {
     loadCategories();
   }, []);
 
+  const handleCategorySelect = useCallback(
+    (cat) => {
+      setActiveCategory(cat);
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('page', '1');
+        if (cat) next.set('category', cat);
+        else next.delete('category');
+        return next;
+      });
+    },
+    [setSearchParams],
+  );
+
   useEffect(() => {
     const loadPosts = async () => {
       try {
         setLoading(true);
         setError('');
-        const params = activeCategory ? { category: activeCategory } : {};
-        const response = await getAll(params);
-        setPosts(response.data || response);
+        const data = await getAll({
+          page,
+          limit,
+          category: activeCategory || undefined,
+        });
+        setPosts(data.posts);
+        setTotalPages(data.totalPages);
       } catch (_err) {
         setError('Error al cargar los posts');
       } finally {
@@ -43,7 +68,7 @@ function Home() {
     };
 
     loadPosts();
-  }, [activeCategory, retryCount]);
+  }, [activeCategory, page, limit, retryCount]);
 
   if (loading) return <Spinner />;
 
@@ -61,30 +86,33 @@ function Home() {
         <CategoryFilter
           categories={categories}
           activeCategory={activeCategory}
-          onSelect={setActiveCategory}
+          onSelect={handleCategorySelect}
         />
 
         <div className="flex-1">
           {posts.length === 0 ? (
             <EmptyState message="No hay publicaciones en esta categoría" />
           ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
-                <PostCard
-                  key={post.id}
-                  id={post.id}
-                  title={post.title}
-                  content={post.content}
-                  author={post.author?.name}
-                  authorId={post.authorId}
-                  coverImage={post.coverImage}
-                  createdAt={post.createdAt}
-                  categories={post.categories || []}
-                  commentsCount={post.commentCount}
-                  onCategoryClick={setActiveCategory}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {posts.map((post) => (
+                  <PostCard
+                    key={post.id}
+                    id={post.id}
+                    title={post.title}
+                    content={post.content}
+                    author={post.author?.name}
+                    authorId={post.authorId}
+                    coverImage={post.coverImage}
+                    createdAt={post.createdAt}
+                    categories={post.categories || []}
+                    commentsCount={post.commentCount}
+                    onCategoryClick={setActiveCategory}
+                  />
+                ))}
+              </div>
+              <Pagination totalPages={totalPages} />
+            </>
           )}
         </div>
       </div>
