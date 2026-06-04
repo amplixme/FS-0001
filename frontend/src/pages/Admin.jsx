@@ -188,77 +188,88 @@ function AdminPage() {
             </thead>
 
             <tbody>
-              {users.map((user) => (
-                <tr
-                  key={user.id}
-                  className="border-b"
-                >
-                  <td className="p-3">{user.name}</td>
-
-                  <td className="p-3">
-                    {user.email}
-                  </td>
-
-                  <td className="p-3">
-                    {user.role}
-                  </td>
-
-                  <td className="p-3">
-                    {user.postsCount}
-                  </td>
-
-                  <td className="p-3">
-                    {new Date(
-                      user.createdAt,
-                    ).toLocaleDateString()}
-                  </td>
-
-                  <td className="p-3">
-                    <div className="flex justify-end gap-2">
-                      <EditUserModal
-                        user={user}
-                        onSuccess={loadData}
-                        trigger={
-                          <Button
-                            size="sm"
-                            variant="outline"
-                          >
-                            Editar
-                          </Button>
-                        }
-                      />
-                      <ConfirmModal
-                        trigger={
-                          <Button
-                            size="sm"
-                            variant="secondary"
-                          >
-                            Cambiar rol
-                          </Button>
-                        }
-                        title="Modificar rol"
-                        description={`¿Seguro que deseas modificar el rol de ${user.name}?`}
-                        confirmText="Cambiar"
-                        onConfirm={() => handleChangeUserRole(user.id)}
-                      />
-
-                      <ConfirmModal
-                        trigger={
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                          >
-                            Eliminar
-                          </Button>
-                        }
-                        title="Eliminar usuario"
-                        description={`¿Seguro que deseas eliminar a ${user.name}?`}
-                        onConfirm={() => handleDeleteUser(user.id)}
-                      />
-                    </div>
+              {users.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={6}
+                    className="py-8 text-center text-gray-500"
+                  >
+                    No hay usuarios registrados
                   </td>
                 </tr>
-              ))}
+              ) : (
+                users.map((user) => (
+                  <tr
+                    key={user.id}
+                    className="border-b"
+                  >
+                    <td className="p-3">{user.name}</td>
+
+                    <td className="p-3">
+                      {user.email}
+                    </td>
+
+                    <td className="p-3">
+                      {user.role}
+                    </td>
+
+                    <td className="p-3">
+                      {user.postsCount}
+                    </td>
+
+                    <td className="p-3">
+                      {new Date(
+                        user.createdAt,
+                      ).toLocaleDateString()}
+                    </td>
+
+                    <td className="p-3">
+                      <div className="flex justify-end gap-2">
+                        <EditUserModal
+                          user={user}
+                          onSuccess={loadData}
+                          trigger={
+                            <Button
+                              size="sm"
+                              variant="outline"
+                            >
+                              Editar
+                            </Button>
+                          }
+                        />
+                        <ConfirmModal
+                          trigger={
+                            <Button
+                              size="sm"
+                              variant="secondary"
+                            >
+                              Cambiar rol
+                            </Button>
+                          }
+                          title="Modificar rol"
+                          description={`¿Seguro que deseas modificar el rol de ${user.name}?`}
+                          confirmText="Cambiar"
+                          onConfirm={() => handleChangeUserRole(user.id)}
+                        />
+
+                        <ConfirmModal
+                          trigger={
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                            >
+                              Eliminar
+                            </Button>
+                          }
+                          title="Eliminar usuario"
+                          description={`¿Seguro que deseas eliminar a ${user.name}?`}
+                          onConfirm={() => handleDeleteUser(user.id)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -298,50 +309,61 @@ function AdminPage() {
             </thead>
 
             <tbody>
-              {posts.map((post) => (
-                <tr
-                  key={post.id}
-                  className="border-b"
-                >
-                  <td className="p-3">
-                    {post.title}
-                  </td>
-
-                  <td className="p-3">
-                    {post.author?.name}
-                  </td>
-
-                  <td className="p-3">
-                    {post.categories
-                      ?.map((c) => c.name)
-                      .join(', ')}
-                  </td>
-
-                  <td className="p-3">
-                    {new Date(
-                      post.createdAt,
-                    ).toLocaleDateString()}
-                  </td>
-
-                  <td className="p-3">
-                    <div className="flex justify-end">
-                      <ConfirmModal
-                        trigger={
-                          <Button
-                            size="sm"
-                            variant="destructive"
-                          >
-                            Eliminar
-                          </Button>
-                        }
-                        title="Eliminar post"
-                        description={`¿Seguro que deseas eliminar el post ${post.title}?`}
-                        onConfirm={() => handleDeletePost(post.id)}
-                      />
-                    </div>
+              {posts.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan={5}
+                    className="py-8 text-center text-gray-500"
+                  >
+                    No hay posts disponibles
                   </td>
                 </tr>
-              ))}
+              ) : (
+                posts.map((post) => (
+                  <tr
+                    key={post.id}
+                    className="border-b"
+                  >
+                    <td className="p-3">
+                      {post.title}
+                    </td>
+
+                    <td className="p-3">
+                      {post.author?.name}
+                    </td>
+
+                    <td className="p-3">
+                      {post.categories
+                        ?.map((c) => c.name)
+                        .join(', ')}
+                    </td>
+
+                    <td className="p-3">
+                      {new Date(
+                        post.createdAt,
+                      ).toLocaleDateString()}
+                    </td>
+
+                    <td className="p-3">
+                      <div className="flex justify-end">
+                        <ConfirmModal
+                          trigger={
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                            >
+                              Eliminar
+                            </Button>
+                          }
+                          title="Eliminar post"
+                          description={`¿Seguro que deseas eliminar el post ${post.title}?`}
+                          onConfirm={() => handleDeletePost(post.id)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
@@ -355,36 +377,47 @@ function AdminPage() {
         </h2>
 
         <div className="space-y-3">
-          {comments.map((comment) => (
-            <div
-              key={comment.id}
-              className="flex items-center justify-between rounded-lg border p-4"
-            >
-              <div>
-                <p className="font-medium">
-                  {comment.author?.name}
-                </p>
+          {comments.length === 0 ? (
+            <tr>
+              <td
+                colSpan={5}
+                className="py-8 text-center text-gray-500"
+              >
+                No hay comentarios disponibles
+              </td>
+            </tr>
+          ) : (
+            comments.map((comment) => (
+              <div
+                key={comment.id}
+                className="flex items-center justify-between rounded-lg border p-4"
+              >
+                <div>
+                  <p className="font-medium">
+                    {comment.author?.name}
+                  </p>
 
-                <p className="text-sm text-muted-foreground">
-                  {comment.content}
-                </p>
+                  <p className="text-sm text-muted-foreground">
+                    {comment.content}
+                  </p>
+                </div>
+
+                <ConfirmModal
+                  trigger={
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                    >
+                      Eliminar
+                    </Button>
+                  }
+                  title="Eliminar comentario"
+                  description={`¿Seguro que deseas eliminar el comentario de ${comment.author?.name}?`}
+                  onConfirm={() => handleDeleteComment(comment.id)}
+                />
               </div>
-
-              <ConfirmModal
-                trigger={
-                  <Button
-                    size="sm"
-                    variant="destructive"
-                  >
-                    Eliminar
-                  </Button>
-                }
-                title="Eliminar comentario"
-                description={`¿Seguro que deseas eliminar el comentario de ${comment.author?.name}?`}
-                onConfirm={() => handleDeleteComment(comment.id)}
-              />
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </Card>
     </div>
