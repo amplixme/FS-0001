@@ -80,6 +80,24 @@ const deleteUser = async (id) => {
   }
 };
 
+const deletePost = async (id) => {
+  try {
+    const response = await api.delete(`/admin/posts/${id}`);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
+const deleteComment = async (id) => {
+  try {
+    const response = await api.delete(`/admin/comments/${id}`);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
 export {
   getStats,
   getUsers,
@@ -89,4 +107,6 @@ export {
   updateUser,
   changeUserRole,
   deleteUser,
+  deletePost,
+  deleteComment,
 };
