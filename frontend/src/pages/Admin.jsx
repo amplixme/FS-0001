@@ -15,10 +15,13 @@ import { Button } from '@/components/ui/button';
 import ConfirmModal from '@/components/common/ConfirmModal';
 import CreateUserModal from '@/components/admin/CreateUserModal';
 import EditUserModal from '@/components/admin/EditUserModal';
+import { toast } from 'sonner';
+import ErrorMessage from '@/components/common/ErrorMessage';
+import Spinner from '@/components/common/Spinner';
 
 function AdminPage() {
   const [loading, setLoading] = useState(true);
-
+  const [error, setError] = useState('');
   const [stats, setStats] = useState(null);
   const [users, setUsers] = useState([]);
   const [posts, setPosts] = useState([]);
@@ -45,7 +48,7 @@ function AdminPage() {
       setPosts(postsResponse.data.data);
       setComments(commentsResponse.data.data);
     } catch (error) {
-      console.error(error);
+      setError(error.message);
     } finally {
       setLoading(false);
     }
@@ -57,45 +60,56 @@ function AdminPage() {
 
   if (loading) {
     return (
-      <div className="p-8 text-center">
-        Cargando panel...
-      </div>
+      <Spinner />
+    );
+  }
+
+  if (error) {
+    return (
+      <ErrorMessage
+        message={error}
+        onRetry={loadData}
+      />
     );
   }
 
   const handleChangeUserRole = async (id) => {
     try {
       await changeUserRole(id);
+      toast.success('Rol modificado');
       await loadData();
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     }
   };
 
   const handleDeleteUser = async (id) => {
     try {
       await deleteUser(id);
+      toast.success('Usuario eliminado');
       await loadData();
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     }
   };
 
   const handleDeletePost = async (id) => {
     try {
       await deletePost(id);
+      toast.success('Post eliminado');
       await loadData();
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     }
   };
 
   const handleDeleteComment = async (id) => {
     try {
       await deleteComment(id);
+      toast.success('Comentario eliminado');
       await loadData();
     } catch (error) {
-      console.error(error);
+      toast.error(error.message);
     }
   };
 
@@ -107,7 +121,7 @@ function AdminPage() {
         </h1>
 
         <p className="text-muted-foreground">
-          Gestión general del blog
+          Bienvenido de nuevo. Aquí tienes un resumen del estado de TuProyecto.
         </p>
       </div>
 
@@ -254,7 +268,7 @@ function AdminPage() {
 
       <Card className="p-6">
         <h2 className="mb-4 text-xl font-semibold">
-          Posts recientes
+          Publicaciones recientes
         </h2>
 
         <div className="overflow-auto">
