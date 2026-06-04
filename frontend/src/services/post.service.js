@@ -8,10 +8,20 @@ const handleApiError = (error) => {
   throw new Error(message);
 };
 
-const getAll = async (params = {}) => {
+const getAll = async ({ page = 1, limit = 9, category, sort, search, ...extra } = {}) => {
   try {
-    const response = await api.get('/posts', { params });
-    return response.data;
+    const response = await api.get('/posts', {
+      params: { page, limit, category, sort, search, ...extra },
+    });
+    const body = response.data;
+    // Normalizar respuesta paginada: { posts, totalPages, total, page, limit }
+    return {
+      posts: body.data ?? body.posts ?? body,
+      totalPages: body.totalPages ?? body.meta?.totalPages ?? 1,
+      total: body.total ?? body.meta?.total ?? 0,
+      page: body.page ?? body.meta?.page ?? page,
+      limit: body.limit ?? body.meta?.limit ?? limit,
+    };
   } catch (error) {
     handleApiError(error);
   }
