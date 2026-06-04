@@ -23,7 +23,7 @@ const users = async (req, res, next) => {
 
 const getPosts = async (req, res, next) => {
   try {
-    const posts = await adminService.getAdminPosts();
+    const posts = await getAdminPosts();
 
     return success(res, posts);
   } catch (error) {
@@ -33,7 +33,7 @@ const getPosts = async (req, res, next) => {
 
 const getComments = async (req, res, next) => {
   try {
-    const comments = await adminService.getAdminComments();
+    const comments = await getAdminComments();
 
     return success(res, comments);
   } catch (error) {
