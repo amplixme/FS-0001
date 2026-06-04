@@ -231,7 +231,15 @@ function AdminPage() {
                     </td>
 
                     <td className="p-3">
-                      {user.role}
+                      <span
+                        className={`inline-flex rounded-md px-2 py-1 text-xs font-medium ${
+                          user.role === 'ADMIN'
+                            ? 'bg-primary text-primary-foreground'
+                            : 'bg-muted text-muted-foreground'
+                        }`}
+                      >
+                        {user.role}
+                      </span>
                     </td>
 
                     <td className="p-3">
