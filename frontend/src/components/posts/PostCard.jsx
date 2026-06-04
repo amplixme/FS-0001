@@ -8,6 +8,7 @@ function PostCard({
   title,
   content,
   author,
+  authorId,
   createdAt,
   coverImage,
   categories = [],
@@ -27,6 +28,11 @@ function PostCard({
   const handleCategoryClick = (e, slug) => {
     e.stopPropagation();
     if (onCategoryClick) onCategoryClick(slug);
+  };
+
+  const handleAuthorClick = (e) => {
+    e.stopPropagation();
+    navigate(`/profile/${authorId}`);
   };
 
   return (
@@ -85,7 +91,13 @@ function PostCard({
           </div>
 
           <div>
-            <p className="text-sm font-semibold text-gray-900">{author} 💬 {commentsCount ?? 0}</p>
+            <p
+              className="text-sm font-semibold inline text-gray-900 hover:underline"
+              onClick={handleAuthorClick}
+            >
+              {author}
+            </p>
+            <span> 💬 {commentsCount ?? 0}</span>
             <p className="text-xs text-gray-500">{date}</p>
           </div>
         </div>
