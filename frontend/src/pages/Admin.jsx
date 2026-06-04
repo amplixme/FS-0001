@@ -186,8 +186,11 @@ function AdminPage() {
 
       <Card className="p-6">
         <div className="mb-4 flex items-center justify-between">
-          <h2 className="text-xl font-semibold">
+          <h2 className="text-xl font-semibold flex items-center justify-between">
             Usuarios
+            <span className={`inline-flex rounded-md ms-2 px-2 py-1 text-xs font-medium bg-muted text-primary`}>
+              {stats.totalUsers}
+            </span>
           </h2>
 
           <CreateUserModal
