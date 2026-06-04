@@ -420,8 +420,12 @@ function AdminPage() {
                     {comment.author?.name}
                   </p>
 
-                  <p className="text-sm text-muted-foreground">
-                    {comment.content}
+                  <p className="text-xs text-muted-foreground">
+                    En: {comment.post?.title}
+                  </p>
+
+                  <p className="text-sm text-muted-foreground italic">
+                    "{comment.content}"
                   </p>
                 </div>
 
