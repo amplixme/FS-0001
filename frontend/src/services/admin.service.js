@@ -26,6 +26,24 @@ const getUsers = async () => {
   }
 };
 
+const getPosts = async () => {
+  try {
+    const response = await api.get('/admin/posts');
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
+const getComments = async () => {
+  try {
+    const response = await api.get('/admin/comments');
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+};
+
 const createUser = async (data) => {
   try {
     const response = await api.post('/admin/users', data);
@@ -65,6 +83,8 @@ const deleteUser = async (id) => {
 export {
   getStats,
   getUsers,
+  getPosts,
+  getComments,
   createUser,
   updateUser,
   changeUserRole,
