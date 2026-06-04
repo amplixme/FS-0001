@@ -27,10 +27,11 @@ const create = async (req, res, next) => {
 
 const getAll = async (req, res, next) => {
   try {
-    const { category, page, limit, sort } = req.query;
+    const { category, search, page, limit, sort } = req.query;
 
     const posts = await getAllPosts({
       categorySlug: category,
+      search,
       page: page ? parseInt(page, 10) : undefined,
       limit: limit ? parseInt(limit, 10) : undefined,
       sort,

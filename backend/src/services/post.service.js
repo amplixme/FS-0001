@@ -22,6 +22,7 @@ const createPost = async ({
 
 const getAllPosts = async ({
   categorySlug,
+  search,
   page = 1,
   limit = 10,
   sort = 'newest',
@@ -34,11 +35,30 @@ const getAllPosts = async ({
 
   const orderBy = sortMap[sort] || sortMap.newest;
   const skip = (page - 1) * limit;
+  const normalizedSearch = search?.trim();
 
   const where = {
     published: true,
+
     ...(categorySlug && {
       categories: { some: { slug: categorySlug } },
+    }),
+
+    ...(normalizedSearch && {
+      OR: [
+        {
+          title: {
+            contains: normalizedSearch,
+            mode: 'insensitive',
+          },
+        },
+        {
+          content: {
+            contains: normalizedSearch,
+            mode: 'insensitive',
+          },
+        },
+      ],
     }),
   };
 
