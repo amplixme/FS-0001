@@ -15,6 +15,7 @@ import {
   DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { UserPlus } from 'lucide-react';
 
 function CreateUserModal({ onSuccess }) {
   const [open, setOpen] = useState(false);
@@ -64,7 +65,7 @@ function CreateUserModal({ onSuccess }) {
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button>
-          Crear usuario
+          <UserPlus className="h-4 w-4" /> Crear usuario
         </Button>
       </DialogTrigger>
 

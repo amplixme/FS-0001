@@ -7,9 +7,7 @@ import {
   getStats,
   getUsers,
 } from '@/services/admin.service';
-
 import api from '@/services/api';
-
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import ConfirmModal from '@/components/common/ConfirmModal';
@@ -18,6 +16,13 @@ import EditUserModal from '@/components/admin/EditUserModal';
 import { toast } from 'sonner';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import Spinner from '@/components/common/Spinner';
+import {
+  Users,
+  FileText,
+  MessageSquare,
+  Trash2,
+  Pencil,
+} from 'lucide-react';
 
 function AdminPage() {
   const [loading, setLoading] = useState(true);
@@ -130,33 +135,48 @@ function AdminPage() {
       {stats && (
         <div className="grid gap-4 md:grid-cols-3">
           <Card className="p-6">
-            <h3 className="text-sm text-muted-foreground">
-              Usuarios
-            </h3>
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-sm text-muted-foreground">
+                  Usuarios
+                </h3>
 
-            <p className="mt-2 text-4xl font-bold">
-              {stats.totalUsers}
-            </p>
+                <p className="mt-2 text-4xl font-bold">
+                  {stats.totalUsers}
+                </p>
+              </div>
+              <Users className="h-6 w-6 text-primary" />
+            </div>
           </Card>
 
           <Card className="p-6">
-            <h3 className="text-sm text-muted-foreground">
-              Posts
-            </h3>
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-sm text-muted-foreground">
+                  Posts
+                </h3>
 
-            <p className="mt-2 text-4xl font-bold">
-              {stats.totalPosts}
-            </p>
+                <p className="mt-2 text-4xl font-bold">
+                  {stats.totalPosts}
+                </p>
+              </div>
+              <FileText className="h-6 w-6 text-primary" />
+            </div>
           </Card>
 
           <Card className="p-6">
-            <h3 className="text-sm text-muted-foreground">
-              Comentarios
-            </h3>
+            <div className="flex items-start justify-between">
+              <div>
+                <h3 className="text-sm text-muted-foreground">
+                  Comentarios
+                </h3>
 
-            <p className="mt-2 text-4xl font-bold">
-              {stats.totalComments}
-            </p>
+                <p className="mt-2 text-4xl font-bold">
+                  {stats.totalComments}
+                </p>
+              </div>
+              <MessageSquare className="h-6 w-6 text-primary" />
+            </div>
           </Card>
         </div>
       )}
@@ -233,7 +253,7 @@ function AdminPage() {
                               size="sm"
                               variant="outline"
                             >
-                              Editar
+                              <Pencil className="h-4 w-4" />
                             </Button>
                           }
                         />
@@ -258,7 +278,7 @@ function AdminPage() {
                               size="sm"
                               variant="destructive"
                             >
-                              Eliminar
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           }
                           title="Eliminar usuario"
@@ -352,7 +372,7 @@ function AdminPage() {
                               size="sm"
                               variant="destructive"
                             >
-                              Eliminar
+                              <Trash2 className="h-4 w-4" />
                             </Button>
                           }
                           title="Eliminar post"
@@ -378,14 +398,9 @@ function AdminPage() {
 
         <div className="space-y-3">
           {comments.length === 0 ? (
-            <tr>
-              <td
-                colSpan={5}
-                className="py-8 text-center text-gray-500"
-              >
-                No hay comentarios disponibles
-              </td>
-            </tr>
+            <p className="py-8 text-center text-gray-500">
+              No hay comentarios para mostrar
+            </p>
           ) : (
             comments.map((comment) => (
               <div
@@ -408,7 +423,7 @@ function AdminPage() {
                       size="sm"
                       variant="destructive"
                     >
-                      Eliminar
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   }
                   title="Eliminar comentario"
