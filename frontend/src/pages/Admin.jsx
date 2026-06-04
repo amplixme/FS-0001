@@ -23,6 +23,7 @@ import {
   Trash2,
   Pencil,
 } from 'lucide-react';
+import { formatRelativeTime } from '@/utils/formatRelativeTime';
 
 function AdminPage() {
   const [loading, setLoading] = useState(true);
@@ -238,9 +239,7 @@ function AdminPage() {
                     </td>
 
                     <td className="p-3">
-                      {new Date(
-                        user.createdAt,
-                      ).toLocaleDateString()}
+                      {formatRelativeTime(user.createdAt)}
                     </td>
 
                     <td className="p-3">
@@ -359,9 +358,7 @@ function AdminPage() {
                     </td>
 
                     <td className="p-3">
-                      {new Date(
-                        post.createdAt,
-                      ).toLocaleDateString()}
+                      {formatRelativeTime(post.createdAt)}
                     </td>
 
                     <td className="p-3">
