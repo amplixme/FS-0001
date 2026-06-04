@@ -1,4 +1,4 @@
-const { getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost, adminDeleteComment } = require('../services/admin.service');
+const { getStats, getUsers, getAdminPosts, getAdminComments, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost, adminDeleteComment } = require('../services/admin.service');
 const { success } = require('../utils/response');
 
 const stats = async (req, res, next) => {
@@ -16,6 +16,26 @@ const users = async (req, res, next) => {
     const data = await getUsers();
 
     return success(res, data);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getPosts = async (req, res, next) => {
+  try {
+    const posts = await adminService.getAdminPosts();
+
+    return success(res, posts);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getComments = async (req, res, next) => {
+  try {
+    const comments = await adminService.getAdminComments();
+
+    return success(res, comments);
   } catch (error) {
     next(error);
   }
@@ -100,6 +120,8 @@ const removeComment = async (req, res, next) => {
 module.exports = {
   stats,
   users,
+  getPosts,
+  getComments,
   createUser,
   changeRole,
   update,

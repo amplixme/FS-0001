@@ -60,6 +60,48 @@ const getUsers = async () => {
   }));
 };
 
+const getAdminPosts = async () => {
+  const posts = await prisma.post.findMany({
+    include: {
+      author: {
+        select: {
+          name: true,
+        },
+      },
+      categories: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 10,
+  });
+
+  return posts;
+};
+
+const getAdminComments = async () => {
+  const comments = await prisma.comment.findMany({
+    include: {
+      author: {
+        select: {
+          name: true,
+        },
+      },
+      post: {
+        select: {
+          title: true,
+        },
+      },
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 10,
+  });
+
+  return comments;
+};
+
 const createAdminUser = async ({
   name,
   email,
@@ -198,5 +240,5 @@ const adminDeleteComment = async (id) => {
 };
 
 module.exports = {
-  getStats, getUsers, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost, adminDeleteComment,
+  getStats, getUsers, getAdminPosts, getAdminComments, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost, adminDeleteComment,
 };
