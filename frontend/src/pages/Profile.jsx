@@ -82,7 +82,7 @@ function Profile() {
 
           {isOwnProfile && (
             <button
-              onClick={() => navigate('/')}
+              onClick={() => navigate('/profile/edit')}
               className="bg-blue-700 text-white px-4 py-2 rounded-full font-bold text-sm hover:shadow-lg hover:shadow-blue-700/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Editar perfil
