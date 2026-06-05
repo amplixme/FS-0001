@@ -15,6 +15,7 @@ const updateProfileSchema = z
     avatarUrl: z
       .string()
       .url('La URL del avatar es inválida')
+      .or(z.literal(''))
       .optional(),
   })
   .refine(
