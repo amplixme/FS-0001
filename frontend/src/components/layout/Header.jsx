@@ -52,6 +52,14 @@ function Header() {
               >
                 Nuevo post
               </Link>
+              {user?.role === 'ADMIN' && (
+                <Link
+                  to="/admin"
+                  className={buttonVariants({ variant: 'outline' })}
+                >
+                  Admin
+                </Link>
+              )}
             </>
           ) : (
             <>
@@ -109,6 +117,14 @@ function Header() {
                 >
                   Logout
                 </button>
+                {user?.role === 'ADMIN' && (
+                  <Link
+                    to="/admin"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    Admin
+                  </Link>
+                )}
               </>
             ) : (
               <>
