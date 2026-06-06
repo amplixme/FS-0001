@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound';
 import ProtectedAdminRoute from './components/ProtectedAdminRoute';
 import Admin from './pages/Admin';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 
 function App() {
   return (
@@ -60,6 +61,14 @@ function App() {
               />
               <Route path="*" element={<NotFound />} />
               <Route path="/profile/:id" element={<Profile />} />
+              <Route
+                path="/profile/edit"
+                element={
+                  <ProtectedRoute>
+                    <EditProfile />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
           </Layout>
         </AuthProvider>
