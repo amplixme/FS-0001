@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams, useLocation } from 'react-router-dom';
 import { buttonVariants } from '@/components/ui/button';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
@@ -7,6 +7,21 @@ import { useAuth } from '@/context/AuthContext';
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
+  const [searchParams] = useSearchParams();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+  const currentSort = searchParams.get('sort');
+
+  const sortTabs = [
+    { label: 'Más recientes', sort: 'newest', isActive: isHome && (!currentSort || currentSort === 'newest') },
+    { label: 'Más comentados', sort: 'comments', isActive: isHome && currentSort === 'comments' },
+    { label: 'Más antiguos', sort: 'oldest', isActive: isHome && currentSort === 'oldest' },
+  ];
+
+  const tabClass = (active) =>
+    active
+      ? 'font-semibold text-blue-600'
+      : 'text-gray-600 hover:text-gray-900 transition-colors';
   return (
     <header className="border-b bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
@@ -19,15 +34,16 @@ function Header() {
         </Link>
 
         <nav className="hidden sm:flex items-center gap-6">
-          <Link to="/latest" onClick={() => setIsMenuOpen(false)}>
-            Latest
-          </Link>
-          <Link to="/popular" onClick={() => setIsMenuOpen(false)}>
-            Popular
-          </Link>
-          <Link to="/newsletter" onClick={() => setIsMenuOpen(false)}>
-            Newsletter
-          </Link>
+          {sortTabs.map(({ label, sort, isActive }) => (
+            <Link
+              key={sort}
+              to={`/?sort=${sort}`}
+              onClick={() => setIsMenuOpen(false)}
+              className={tabClass(isActive)}
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
 
         <div className="hidden sm:flex items-center gap-4">
@@ -90,16 +106,16 @@ function Header() {
       {isMenuOpen && (
         <div className="border-t bg-white px-6 py-4 sm:hidden">
           <nav className="flex flex-col gap-4">
-            <Link to="/latest" onClick={() => setIsMenuOpen(false)}>
-              Latest
-            </Link>
-            <Link to="/popular" onClick={() => setIsMenuOpen(false)}>
-              Popular
-            </Link>
-            <Link to="/newsletter" onClick={() => setIsMenuOpen(false)}>
-              Newsletter
-            </Link>
-
+            {sortTabs.map(({ label, sort, isActive }) => (
+              <Link
+                key={sort}
+                to={`/?sort=${sort}`}
+                onClick={() => setIsMenuOpen(false)}
+                className={tabClass(isActive)}
+              >
+                {label}
+              </Link>
+            ))}
             <hr />
 
             {isAuthenticated ? (

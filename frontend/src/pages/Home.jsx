@@ -14,6 +14,7 @@ function Home() {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') ?? 1);
   const limit = Number(searchParams.get('limit') ?? 9);
+  const sort = searchParams.get('sort') ?? undefined;
   const search = searchParams.get('search') ?? '';
   const category = searchParams.get('category') ?? null;
 
@@ -73,6 +74,7 @@ function Home() {
           page,
           limit,
           category: activeCategory || undefined,
+          sort,
           search: search || undefined,
         });
         setPosts(data.posts);
@@ -85,7 +87,7 @@ function Home() {
     };
 
     loadPosts();
-  }, [activeCategory, page, limit, search, retryCount]);
+  },[activeCategory, page, limit, sort, search, retryCount]);
 
   if (loading) return <Spinner />;
 
