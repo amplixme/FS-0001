@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import PostCard from '@/components/posts/PostCard';
 import CategoryFilter from '@/components/common/CategoryFilter';
 import Pagination from '@/components/common/Pagination';
+import SearchInput from '@/components/common/SearchInput';
 import Spinner from '@/components/common/Spinner';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import EmptyState from '@/components/common/EmptyState';
@@ -14,11 +15,13 @@ function Home() {
   const page = Number(searchParams.get('page') ?? 1);
   const limit = Number(searchParams.get('limit') ?? 9);
   const sort = searchParams.get('sort') ?? undefined;
+  const search = searchParams.get('search') ?? '';
+  const category = searchParams.get('category') ?? null;
 
   const [posts, setPosts] = useState([]);
   const [totalPages, setTotalPages] = useState(1);
   const [categories, setCategories] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(category);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [retryCount, setRetryCount] = useState(0);
@@ -49,6 +52,19 @@ function Home() {
     [setSearchParams],
   );
 
+  const handleSearch = useCallback(
+    (value) => {
+      setSearchParams((prev) => {
+        const next = new URLSearchParams(prev);
+        next.set('page', '1');
+        if (value) next.set('search', value);
+        else next.delete('search');
+        return next;
+      });
+    },
+    [setSearchParams],
+  );
+
   useEffect(() => {
     const loadPosts = async () => {
       try {
@@ -59,6 +75,7 @@ function Home() {
           limit,
           category: activeCategory || undefined,
           sort,
+          search: search || undefined,
         });
         setPosts(data.posts);
         setTotalPages(data.totalPages);
@@ -70,7 +87,7 @@ function Home() {
     };
 
     loadPosts();
-  }, [activeCategory, page, limit, sort, retryCount]);
+  },[activeCategory, page, limit, sort, search, retryCount]);
 
   if (loading) return <Spinner />;
 
@@ -92,8 +109,12 @@ function Home() {
         />
 
         <div className="flex-1">
+          <div className="mb-6">
+            <SearchInput value={search} onChange={handleSearch} />
+          </div>
+
           {posts.length === 0 ? (
-            <EmptyState message="No hay publicaciones en esta categoría" />
+            <EmptyState message="No hay publicaciones que coincidan con tu búsqueda" />
           ) : (
             <>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -109,7 +130,7 @@ function Home() {
                     createdAt={post.createdAt}
                     categories={post.categories || []}
                     commentsCount={post.commentCount}
-                    onCategoryClick={setActiveCategory}
+                    onCategoryClick={handleCategorySelect}
                   />
                 ))}
               </div>
