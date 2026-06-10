@@ -46,8 +46,7 @@ const remove = async (id) => {
       throw new Error(message, { cause: error });
     }
     const message =
-      error.response?.data?.error?.message ||
-      'Error al eliminar la categoría';
+      error.response?.data?.error?.message || 'Error al eliminar la categoría';
     throw new Error(message, { cause: error });
   }
 };

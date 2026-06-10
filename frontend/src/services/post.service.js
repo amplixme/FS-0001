@@ -8,7 +8,14 @@ const handleApiError = (error) => {
   throw new Error(message);
 };
 
-const getAll = async ({ page = 1, limit = 9, category, sort, search, ...extra } = {}) => {
+const getAll = async ({
+  page = 1,
+  limit = 9,
+  category,
+  sort,
+  search,
+  ...extra
+} = {}) => {
   try {
     const response = await api.get('/posts', {
       params: { page, limit, category, sort, search, ...extra },

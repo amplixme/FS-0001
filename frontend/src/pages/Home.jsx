@@ -79,7 +79,7 @@ function Home() {
         });
         setPosts(data.posts);
         setTotalPages(data.totalPages);
-      } catch (_err) {
+      } catch {
         setError('Error al cargar los posts');
       } finally {
         setLoading(false);
@@ -87,7 +87,7 @@ function Home() {
     };
 
     loadPosts();
-  },[activeCategory, page, limit, sort, search, retryCount]);
+  }, [activeCategory, page, limit, sort, search, retryCount]);
 
   if (loading) return <Spinner />;
 

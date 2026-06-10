@@ -16,13 +16,7 @@ import EditUserModal from '@/components/admin/EditUserModal';
 import { toast } from 'sonner';
 import ErrorMessage from '@/components/common/ErrorMessage';
 import Spinner from '@/components/common/Spinner';
-import {
-  Users,
-  FileText,
-  MessageSquare,
-  Trash2,
-  Pencil,
-} from 'lucide-react';
+import { Users, FileText, MessageSquare, Trash2, Pencil } from 'lucide-react';
 import { formatRelativeTime } from '@/utils/formatRelativeTime';
 
 function AdminPage() {
@@ -37,17 +31,13 @@ function AdminPage() {
     try {
       setLoading(true);
 
-      const [
-        statsResponse,
-        usersResponse,
-        postsResponse,
-        commentsResponse,
-      ] = await Promise.all([
-        getStats(),
-        getUsers(),
-        api.get('/admin/posts'),
-        api.get('/admin/comments'),
-      ]);
+      const [statsResponse, usersResponse, postsResponse, commentsResponse] =
+        await Promise.all([
+          getStats(),
+          getUsers(),
+          api.get('/admin/posts'),
+          api.get('/admin/comments'),
+        ]);
 
       setStats(statsResponse.data);
       setUsers(usersResponse.data);
@@ -65,18 +55,11 @@ function AdminPage() {
   }, []);
 
   if (loading) {
-    return (
-      <Spinner />
-    );
+    return <Spinner />;
   }
 
   if (error) {
-    return (
-      <ErrorMessage
-        message={error}
-        onRetry={loadData}
-      />
-    );
+    return <ErrorMessage message={error} onRetry={loadData} />;
   }
 
   const handleChangeUserRole = async (id) => {
@@ -122,9 +105,7 @@ function AdminPage() {
   return (
     <div className="mx-auto max-w-7xl p-6 space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">
-          Panel de Administración
-        </h1>
+        <h1 className="text-3xl font-bold">Panel de Administración</h1>
 
         <p className="text-muted-foreground">
           Bienvenido de nuevo. Aquí tienes un resumen del estado de TuProyecto.
@@ -138,13 +119,9 @@ function AdminPage() {
           <Card className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-sm text-muted-foreground">
-                  Usuarios
-                </h3>
+                <h3 className="text-sm text-muted-foreground">Usuarios</h3>
 
-                <p className="mt-2 text-4xl font-bold">
-                  {stats.totalUsers}
-                </p>
+                <p className="mt-2 text-4xl font-bold">{stats.totalUsers}</p>
               </div>
               <Users className="h-6 w-6 text-primary" />
             </div>
@@ -153,13 +130,9 @@ function AdminPage() {
           <Card className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-sm text-muted-foreground">
-                  Posts
-                </h3>
+                <h3 className="text-sm text-muted-foreground">Posts</h3>
 
-                <p className="mt-2 text-4xl font-bold">
-                  {stats.totalPosts}
-                </p>
+                <p className="mt-2 text-4xl font-bold">{stats.totalPosts}</p>
               </div>
               <FileText className="h-6 w-6 text-primary" />
             </div>
@@ -168,13 +141,9 @@ function AdminPage() {
           <Card className="p-6">
             <div className="flex items-start justify-between">
               <div>
-                <h3 className="text-sm text-muted-foreground">
-                  Comentarios
-                </h3>
+                <h3 className="text-sm text-muted-foreground">Comentarios</h3>
 
-                <p className="mt-2 text-4xl font-bold">
-                  {stats.totalComments}
-                </p>
+                <p className="mt-2 text-4xl font-bold">{stats.totalComments}</p>
               </div>
               <MessageSquare className="h-6 w-6 text-primary" />
             </div>
@@ -188,14 +157,14 @@ function AdminPage() {
         <div className="mb-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold flex items-center justify-between">
             Usuarios
-            <span className={`inline-flex rounded-md ms-2 px-2 py-1 text-xs font-medium bg-muted text-primary`}>
+            <span
+              className={`inline-flex rounded-md ms-2 px-2 py-1 text-xs font-medium bg-muted text-primary`}
+            >
               {stats.totalUsers}
             </span>
           </h2>
 
-          <CreateUserModal
-            onSuccess={loadData}
-          />
+          <CreateUserModal onSuccess={loadData} />
         </div>
 
         <div className="overflow-auto">
@@ -214,24 +183,16 @@ function AdminPage() {
             <tbody>
               {users.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="py-8 text-center text-gray-500"
-                  >
+                  <td colSpan={6} className="py-8 text-center text-gray-500">
                     No hay usuarios registrados
                   </td>
                 </tr>
               ) : (
                 users.map((user) => (
-                  <tr
-                    key={user.id}
-                    className="border-b"
-                  >
+                  <tr key={user.id} className="border-b">
                     <td className="p-3">{user.name}</td>
 
-                    <td className="p-3">
-                      {user.email}
-                    </td>
+                    <td className="p-3">{user.email}</td>
 
                     <td className="p-3">
                       <span
@@ -245,9 +206,7 @@ function AdminPage() {
                       </span>
                     </td>
 
-                    <td className="p-3">
-                      {user.postsCount}
-                    </td>
+                    <td className="p-3">{user.postsCount}</td>
 
                     <td className="p-3">
                       {formatRelativeTime(user.createdAt)}
@@ -259,20 +218,14 @@ function AdminPage() {
                           user={user}
                           onSuccess={loadData}
                           trigger={
-                            <Button
-                              size="sm"
-                              variant="outline"
-                            >
+                            <Button size="sm" variant="outline">
                               <Pencil className="h-4 w-4" />
                             </Button>
                           }
                         />
                         <ConfirmModal
                           trigger={
-                            <Button
-                              size="sm"
-                              variant="secondary"
-                            >
+                            <Button size="sm" variant="secondary">
                               Cambiar rol
                             </Button>
                           }
@@ -284,10 +237,7 @@ function AdminPage() {
 
                         <ConfirmModal
                           trigger={
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                            >
+                            <Button size="sm" variant="destructive">
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           }
@@ -308,64 +258,40 @@ function AdminPage() {
       {/* POSTS */}
 
       <Card className="p-6">
-        <h2 className="mb-4 text-xl font-semibold">
-          Publicaciones recientes
-        </h2>
+        <h2 className="mb-4 text-xl font-semibold">Publicaciones recientes</h2>
 
         <div className="overflow-auto">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b">
-                <th className="p-3 text-left">
-                  Título
-                </th>
+                <th className="p-3 text-left">Título</th>
 
-                <th className="p-3 text-left">
-                  Autor
-                </th>
+                <th className="p-3 text-left">Autor</th>
 
-                <th className="p-3 text-left">
-                  Categorías
-                </th>
+                <th className="p-3 text-left">Categorías</th>
 
-                <th className="p-3 text-left">
-                  Fecha
-                </th>
+                <th className="p-3 text-left">Fecha</th>
 
-                <th className="p-3 text-right">
-                  Acciones
-                </th>
+                <th className="p-3 text-right">Acciones</th>
               </tr>
             </thead>
 
             <tbody>
               {posts.length === 0 ? (
                 <tr>
-                  <td
-                    colSpan={5}
-                    className="py-8 text-center text-gray-500"
-                  >
+                  <td colSpan={5} className="py-8 text-center text-gray-500">
                     No hay posts disponibles
                   </td>
                 </tr>
               ) : (
                 posts.map((post) => (
-                  <tr
-                    key={post.id}
-                    className="border-b"
-                  >
-                    <td className="p-3">
-                      {post.title}
-                    </td>
+                  <tr key={post.id} className="border-b">
+                    <td className="p-3">{post.title}</td>
+
+                    <td className="p-3">{post.author?.name}</td>
 
                     <td className="p-3">
-                      {post.author?.name}
-                    </td>
-
-                    <td className="p-3">
-                      {post.categories
-                        ?.map((c) => c.name)
-                        .join(', ')}
+                      {post.categories?.map((c) => c.name).join(', ')}
                     </td>
 
                     <td className="p-3">
@@ -376,10 +302,7 @@ function AdminPage() {
                       <div className="flex justify-end">
                         <ConfirmModal
                           trigger={
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                            >
+                            <Button size="sm" variant="destructive">
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           }
@@ -400,9 +323,7 @@ function AdminPage() {
       {/* COMENTARIOS */}
 
       <Card className="p-6">
-        <h2 className="mb-4 text-xl font-semibold">
-          Comentarios recientes
-        </h2>
+        <h2 className="mb-4 text-xl font-semibold">Comentarios recientes</h2>
 
         <div className="space-y-3">
           {comments.length === 0 ? (
@@ -416,9 +337,7 @@ function AdminPage() {
                 className="flex items-center justify-between rounded-lg border p-4"
               >
                 <div>
-                  <p className="font-medium">
-                    {comment.author?.name}
-                  </p>
+                  <p className="font-medium">{comment.author?.name}</p>
 
                   <p className="text-xs text-muted-foreground">
                     En: {comment.post?.title}
@@ -431,10 +350,7 @@ function AdminPage() {
 
                 <ConfirmModal
                   trigger={
-                    <Button
-                      size="sm"
-                      variant="destructive"
-                    >
+                    <Button size="sm" variant="destructive">
                       <Trash2 className="h-4 w-4" />
                     </Button>
                   }

@@ -13,16 +13,11 @@ import { Button } from '@/components/ui/button';
 function EditProfile() {
   const navigate = useNavigate();
 
-  const {
-    user,
-    updateUser: updateAuthUser,
-  } = useAuth();
+  const { user, updateUser: updateAuthUser } = useAuth();
 
   const [name, setName] = useState(user?.name || '');
   const [bio, setBio] = useState(user?.bio || '');
-  const [avatarUrl, setAvatarUrl] = useState(
-    user?.avatarUrl || '',
-  );
+  const [avatarUrl, setAvatarUrl] = useState(user?.avatarUrl || '');
 
   const [saving, setSaving] = useState(false);
 
@@ -57,27 +52,17 @@ function EditProfile() {
     <div className="min-h-screen bg-slate-50 py-10 px-4">
       <div className="mx-auto max-w-3xl">
         <Card className="p-6">
-          <h1 className="text-2xl font-bold">
-            Editar perfil
-          </h1>
+          <h1 className="text-2xl font-bold">Editar perfil</h1>
 
           <p className="mb-6 text-sm text-muted-foreground">
             Personaliza tu identidad digital en la plataforma.
           </p>
 
-          <form
-            onSubmit={handleSubmit}
-            className="space-y-6"
-          >
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="mb-2 block text-sm font-medium">
-                Avatar
-              </label>
+              <label className="mb-2 block text-sm font-medium">Avatar</label>
 
-              <ImageUpload
-                value={avatarUrl}
-                onChange={setAvatarUrl}
-              />
+              <ImageUpload value={avatarUrl} onChange={setAvatarUrl} />
             </div>
 
             <div>
@@ -87,9 +72,7 @@ function EditProfile() {
 
               <Input
                 value={name}
-                onChange={(e) =>
-                  setName(e.target.value)
-                }
+                onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
@@ -103,9 +86,7 @@ function EditProfile() {
                 value={bio}
                 maxLength={200}
                 rows={5}
-                onChange={(e) =>
-                  setBio(e.target.value)
-                }
+                onChange={(e) => setBio(e.target.value)}
                 className="w-full rounded-lg border p-3"
                 placeholder="Breve descripción para tu perfil público"
               />
@@ -119,20 +100,13 @@ function EditProfile() {
               <Button
                 type="button"
                 variant="outline"
-                onClick={() =>
-                  navigate(`/profile/${user.id}`)
-                }
+                onClick={() => navigate(`/profile/${user.id}`)}
               >
                 Cancelar
               </Button>
 
-              <Button
-                type="submit"
-                disabled={saving}
-              >
-                {saving
-                  ? 'Guardando...'
-                  : 'Guardar cambios'}
+              <Button type="submit" disabled={saving}>
+                {saving ? 'Guardando...' : 'Guardar cambios'}
               </Button>
             </div>
           </form>

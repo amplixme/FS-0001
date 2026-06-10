@@ -13,9 +13,21 @@ function Header() {
   const currentSort = searchParams.get('sort');
 
   const sortTabs = [
-    { label: 'Más recientes', sort: 'newest', isActive: isHome && (!currentSort || currentSort === 'newest') },
-    { label: 'Más comentados', sort: 'comments', isActive: isHome && currentSort === 'comments' },
-    { label: 'Más antiguos', sort: 'oldest', isActive: isHome && currentSort === 'oldest' },
+    {
+      label: 'Más recientes',
+      sort: 'newest',
+      isActive: isHome && (!currentSort || currentSort === 'newest'),
+    },
+    {
+      label: 'Más comentados',
+      sort: 'comments',
+      isActive: isHome && currentSort === 'comments',
+    },
+    {
+      label: 'Más antiguos',
+      sort: 'oldest',
+      isActive: isHome && currentSort === 'oldest',
+    },
   ];
 
   const tabClass = (active) =>
@@ -121,10 +133,7 @@ function Header() {
             {isAuthenticated ? (
               <>
                 <span className="text-sm font-medium">{user.name}</span>
-                <Link
-                  to="/categorias"
-                  onClick={() => setIsMenuOpen(false)}
-                >
+                <Link to="/categorias" onClick={() => setIsMenuOpen(false)}>
                   Categorías
                 </Link>
                 <button
@@ -134,10 +143,7 @@ function Header() {
                   Logout
                 </button>
                 {user?.role === 'ADMIN' && (
-                  <Link
-                    to="/admin"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
+                  <Link to="/admin" onClick={() => setIsMenuOpen(false)}>
                     Admin
                   </Link>
                 )}

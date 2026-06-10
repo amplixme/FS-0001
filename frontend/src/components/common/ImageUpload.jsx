@@ -15,11 +15,7 @@ function ImageUpload({ value, onChange }) {
   const [isDragging, setIsDragging] = useState(false);
 
   const validateFile = (file) => {
-    const allowedTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-    ];
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
 
     const maxSize = 5 * 1024 * 1024;
 
@@ -61,9 +57,7 @@ function ImageUpload({ value, onChange }) {
           'Content-Type': 'multipart/form-data',
         },
         onUploadProgress: (event) => {
-          const percent = Math.round(
-            (event.loaded * 100) / event.total,
-          );
+          const percent = Math.round((event.loaded * 100) / event.total);
 
           setProgress(percent);
         },
@@ -76,8 +70,7 @@ function ImageUpload({ value, onChange }) {
       onChange(uploadedUrl);
     } catch (error) {
       setError(
-        error.response?.data?.error?.message ||
-          'Error al subir la imagen',
+        error.response?.data?.error?.message || 'Error al subir la imagen',
       );
 
       setPreview('');
@@ -171,11 +164,7 @@ function ImageUpload({ value, onChange }) {
         </div>
       )}
 
-      {error && (
-        <p className="text-sm text-red-500">
-          {error}
-        </p>
-      )}
+      {error && <p className="text-sm text-red-500">{error}</p>}
     </div>
   );
 }

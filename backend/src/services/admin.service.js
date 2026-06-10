@@ -102,12 +102,7 @@ const getAdminComments = async () => {
   return comments;
 };
 
-const createAdminUser = async ({
-  name,
-  email,
-  password,
-  role,
-}) => {
+const createAdminUser = async ({ name, email, password, role }) => {
   const user = await createUser({
     name,
     email,
@@ -170,15 +165,8 @@ const updateUser = async ({ id, data, currentUserId }) => {
     }
   }
 
-  if (
-    id === currentUserId &&
-    data.role &&
-    data.role !== user.role
-  ) {
-    throw new AppError(
-      'No puedes modificar tu propio rol',
-      400,
-    );
+  if (id === currentUserId && data.role && data.role !== user.role) {
+    throw new AppError('No puedes modificar tu propio rol', 400);
   }
 
   const updatedUser = await prisma.user.update({
@@ -240,5 +228,14 @@ const adminDeleteComment = async (id) => {
 };
 
 module.exports = {
-  getStats, getUsers, getAdminPosts, getAdminComments, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost, adminDeleteComment,
+  getStats,
+  getUsers,
+  getAdminPosts,
+  getAdminComments,
+  createAdminUser,
+  toggleUserRole,
+  updateUser,
+  deleteUser,
+  adminDeletePost,
+  adminDeleteComment,
 };
