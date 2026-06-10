@@ -71,9 +71,7 @@ function CreateUserModal({ onSuccess }) {
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Crear usuario
-          </DialogTitle>
+          <DialogTitle>Crear usuario</DialogTitle>
           <DialogDescription>
             Completa los datos para crear un nuevo usuario.
           </DialogDescription>
@@ -109,28 +107,18 @@ function CreateUserModal({ onSuccess }) {
             onChange={handleChange}
             className="w-full rounded-md border p-2"
           >
-            <option value="USER">
-              USER
-            </option>
+            <option value="USER">USER</option>
 
-            <option value="ADMIN">
-              ADMIN
-            </option>
+            <option value="ADMIN">ADMIN</option>
           </select>
         </div>
 
         <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setOpen(false)}
-          >
+          <Button variant="outline" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
 
-          <Button
-            onClick={handleSubmit}
-            disabled={loading}
-          >
+          <Button onClick={handleSubmit} disabled={loading}>
             Guardar
           </Button>
         </DialogFooter>

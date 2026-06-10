@@ -82,4 +82,9 @@ const deleteComment = async ({ id, user }) => {
   });
 };
 
-module.exports = { createComment, getCommentsByPost, updateComment, deleteComment };
+module.exports = {
+  createComment,
+  getCommentsByPost,
+  updateComment,
+  deleteComment,
+};

@@ -16,11 +16,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-function EditUserModal({
-  user,
-  trigger,
-  onSuccess,
-}) {
+function EditUserModal({ user, trigger, onSuccess }) {
   const [open, setOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -68,19 +64,13 @@ function EditUserModal({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
-        {trigger}
-      </DialogTrigger>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>
-            Editar usuario
-          </DialogTitle>
+          <DialogTitle>Editar usuario</DialogTitle>
 
-          <DialogDescription>
-            Modifica los datos del usuario.
-          </DialogDescription>
+          <DialogDescription>Modifica los datos del usuario.</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -105,28 +95,18 @@ function EditUserModal({
             onChange={handleChange}
             className="w-full rounded-md border p-2"
           >
-            <option value="USER">
-              USER
-            </option>
+            <option value="USER">USER</option>
 
-            <option value="ADMIN">
-              ADMIN
-            </option>
+            <option value="ADMIN">ADMIN</option>
           </select>
         </div>
 
         <DialogFooter>
-          <Button
-            variant="outline"
-            onClick={() => setOpen(false)}
-          >
+          <Button variant="outline" onClick={() => setOpen(false)}>
             Cancelar
           </Button>
 
-          <Button
-            onClick={handleSubmit}
-            disabled={loading}
-          >
+          <Button onClick={handleSubmit} disabled={loading}>
             Guardar cambios
           </Button>
         </DialogFooter>

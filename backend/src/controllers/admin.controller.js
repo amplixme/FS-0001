@@ -1,4 +1,15 @@
-const { getStats, getUsers, getAdminPosts, getAdminComments, createAdminUser, toggleUserRole, updateUser, deleteUser, adminDeletePost, adminDeleteComment } = require('../services/admin.service');
+const {
+  getStats,
+  getUsers,
+  getAdminPosts,
+  getAdminComments,
+  createAdminUser,
+  toggleUserRole,
+  updateUser,
+  deleteUser,
+  adminDeletePost,
+  adminDeleteComment,
+} = require('../services/admin.service');
 const { success } = require('../utils/response');
 
 const stats = async (req, res, next) => {

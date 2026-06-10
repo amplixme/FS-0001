@@ -22,7 +22,7 @@ function PostDetail() {
       try {
         const response = await getById(id);
         setPost(response.data);
-      } catch (err) {
+      } catch {
         setError('No se pudo cargar el post');
       } finally {
         setLoading(false);

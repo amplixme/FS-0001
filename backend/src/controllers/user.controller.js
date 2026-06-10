@@ -1,4 +1,7 @@
-const { getPublicProfile, updateMyProfile } = require('../services/user.service');
+const {
+  getPublicProfile,
+  updateMyProfile,
+} = require('../services/user.service');
 const { success } = require('../utils/response');
 
 const getProfile = async (req, res, next) => {

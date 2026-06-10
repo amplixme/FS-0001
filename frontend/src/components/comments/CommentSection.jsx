@@ -110,8 +110,8 @@ function CommentSection({ postId }) {
 
       setComments((currentComments) =>
         currentComments.map((comment) =>
-          comment.id === commentId ? response.data : comment
-        )
+          comment.id === commentId ? response.data : comment,
+        ),
       );
 
       handleCancelEditing();
@@ -294,4 +294,3 @@ function CommentSection({ postId }) {
 }
 
 export default CommentSection;
-

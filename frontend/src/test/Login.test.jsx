@@ -45,8 +45,12 @@ describe('Login', () => {
 
     await user.click(screen.getByRole('button', { name: 'Iniciar sesión' }));
 
-    expect(await screen.findByText('El email es obligatorio')).toBeInTheDocument();
-    expect(screen.getByText('La contraseña es obligatoria')).toBeInTheDocument();
+    expect(
+      await screen.findByText('El email es obligatorio'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText('La contraseña es obligatoria'),
+    ).toBeInTheDocument();
     expect(api.post).not.toHaveBeenCalled();
   });
 
