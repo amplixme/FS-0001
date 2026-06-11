@@ -21,6 +21,10 @@ const {
   deletePost,
 } = require('../services/post.service.js');
 
+afterEach(() => {
+  vi.restoreAllMocks();
+});
+
 it('crea un post correctamente', async () => {
   const mockPost = {
     id: 'post-1',
