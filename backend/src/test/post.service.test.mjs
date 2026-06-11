@@ -137,3 +137,24 @@ it('lanza 404 cuando el post no existe', async () => {
     status: 404,
   });
 });
+
+it('lanza 403 cuando el usuario no es autor ni admin', async () => {
+  vi.spyOn(prisma.post, 'findUnique').mockResolvedValue({
+    id: 'post-1',
+    authorId: 'owner-id',
+  });
+
+  await expect(
+    updatePost({
+      id: 'post-1',
+      data: {},
+      user: {
+        id: 'otro-user',
+        role: 'USER',
+      },
+    }),
+  ).rejects.toMatchObject({
+    message: 'No tienes permiso para modificar este post',
+    status: 403,
+  });
+});
