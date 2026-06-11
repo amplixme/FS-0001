@@ -73,3 +73,67 @@ it('obtiene un post por id', async () => {
 
   expect(result).toEqual(post);
 });
+
+it('actualiza un post siendo autor', async () => {
+  vi.spyOn(prisma.post, 'findUnique').mockResolvedValue({
+    id: 'post-1',
+    authorId: 'user-1',
+  });
+
+  vi.spyOn(prisma.post, 'update').mockResolvedValue({
+    id: 'post-1',
+    title: 'Nuevo',
+  });
+
+  const result = await updatePost({
+    id: 'post-1',
+    data: { title: 'Nuevo' },
+    user: {
+      id: 'user-1',
+      role: 'USER',
+    },
+  });
+
+  expect(prisma.post.update).toHaveBeenCalled();
+  expect(result.title).toBe('Nuevo');
+});
+
+it('actualiza un post siendo admin', async () => {
+  vi.spyOn(prisma.post, 'findUnique').mockResolvedValue({
+    id: 'post-1',
+    authorId: 'otro-user',
+  });
+
+  vi.spyOn(prisma.post, 'update').mockResolvedValue({
+    id: 'post-1',
+  });
+
+  await updatePost({
+    id: 'post-1',
+    data: { title: 'Editado' },
+    user: {
+      id: 'admin-1',
+      role: 'ADMIN',
+    },
+  });
+
+  expect(prisma.post.update).toHaveBeenCalled();
+});
+
+it('lanza 404 cuando el post no existe', async () => {
+  vi.spyOn(prisma.post, 'findUnique').mockResolvedValue(null);
+
+  await expect(
+    updatePost({
+      id: 'inexistente',
+      data: {},
+      user: {
+        id: 'user-1',
+        role: 'USER',
+      },
+    }),
+  ).rejects.toMatchObject({
+    message: 'Post no encontrado',
+    status: 404,
+  });
+});
