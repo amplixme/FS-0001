@@ -158,3 +158,24 @@ it('lanza 403 cuando el usuario no es autor ni admin', async () => {
     status: 403,
   });
 });
+
+it('elimina un post siendo autor', async () => {
+  vi.spyOn(prisma.post, 'findUnique').mockResolvedValue({
+    id: 'post-1',
+    authorId: 'user-1',
+  });
+
+  vi.spyOn(prisma.post, 'delete').mockResolvedValue({});
+
+  await deletePost({
+    id: 'post-1',
+    user: {
+      id: 'user-1',
+      role: 'USER',
+    },
+  });
+
+  expect(prisma.post.delete).toHaveBeenCalledWith({
+    where: { id: 'post-1' },
+  });
+});
