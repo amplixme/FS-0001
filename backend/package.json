@@ -7,6 +7,7 @@
     "test": "vitest run",
     "start": "node app.js",
     "dev": "nodemon app.js",
+    "seed": "prisma db seed",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },
