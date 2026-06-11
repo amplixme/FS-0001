@@ -40,3 +40,36 @@ it('crea un post correctamente', async () => {
 
   expect(result).toEqual(mockPost);
 });
+
+it('obtiene posts paginados', async () => {
+  vi.spyOn(prisma.post, 'findMany').mockResolvedValue([
+    {
+      id: '1',
+      title: 'Post',
+      _count: {
+        comments: 2,
+      },
+    },
+  ]);
+
+  vi.spyOn(prisma.post, 'count').mockResolvedValue(1);
+
+  const result = await getAllPosts();
+
+  expect(result.total).toBe(1);
+  expect(result.data).toHaveLength(1);
+  expect(result.data[0].commentCount).toBe(2);
+});
+
+it('obtiene un post por id', async () => {
+  const post = {
+    id: 'post-1',
+    title: 'Test',
+  };
+
+  vi.spyOn(prisma.post, 'findFirst').mockResolvedValue(post);
+
+  const result = await getPostById('post-1');
+
+  expect(result).toEqual(post);
+});
