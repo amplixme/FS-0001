@@ -21,6 +21,22 @@ const options = {
           bearerFormat: 'JWT',
         },
       },
+
+      schemas: {
+        ErrorResponse: {
+          type: 'object',
+          properties: {
+            error: {
+              type: 'object',
+              properties: {
+                message: {
+                  type: 'string',
+                },
+              },
+            },
+          },
+        },
+      },
     },
   },
 
