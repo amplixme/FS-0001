@@ -1,6 +1,5 @@
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../config/prisma');
 const AppError = require('../utils/AppErrors');
-const prisma = new PrismaClient();
 
 const createPost = async ({
   title,
