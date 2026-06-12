@@ -8,9 +8,17 @@ const router = require('./src/routes');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./src/config/swagger');
+
 app.use(cors());
 app.use(express.json());
 app.use('/api', router);
+app.use(
+  '/api/docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec),
+);
 
 app.get('/', (req, res) => {
   res.json({ message: 'Server running correctly' });
@@ -21,3 +29,5 @@ app.listen(PORT, () => {
 });
 
 app.use(errorHandler);
+
+
