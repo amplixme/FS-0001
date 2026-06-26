@@ -5,12 +5,18 @@ function SearchInput({ value, onChange }) {
   const [inputValue, setInputValue] = useState(value || '');
 
   useEffect(() => {
+    setInputValue(value || '');
+  }, [value]);
+
+  useEffect(() => {
+    if (inputValue === value) return;
+
     const timer = setTimeout(() => {
       onChange(inputValue);
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [inputValue, onChange]);
+  }, [inputValue, value, onChange]);
 
   return (
     <div className="relative flex items-center">

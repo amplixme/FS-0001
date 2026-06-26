@@ -42,7 +42,7 @@ function Header() {
           className="text-xl font-bold"
           onClick={() => setIsMenuOpen(false)}
         >
-          TuProyecto
+          BloggerDev
         </Link>
 
         <nav className="hidden sm:flex items-center gap-6">

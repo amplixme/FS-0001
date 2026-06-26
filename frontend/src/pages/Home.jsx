@@ -26,6 +26,11 @@ function Home() {
   const [error, setError] = useState('');
   const [retryCount, setRetryCount] = useState(0);
 
+  // Sync activeCategory when the URL category param changes externally (e.g., browser back/forward)
+  useEffect(() => {
+    setActiveCategory(category);
+  }, [category]);
+
   useEffect(() => {
     const loadCategories = async () => {
       try {
