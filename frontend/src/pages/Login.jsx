@@ -57,7 +57,7 @@ function Login() {
               style={{ color: '#2563eb' }}
               className="text-xl font-bold tracking-tight"
             >
-              TuProyecto
+              BloggerDev
             </span>
           </div>
 
